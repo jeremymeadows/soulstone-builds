@@ -1,0 +1,15 @@
+@use "variables.scss" as *;
+
+:root,
+html {
+  --fg: #{$white};
+  --bg: #{$black};
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --link: #{$primary};
+  --bg-alt: #{$black-lighter};
+  --green-filter: #{color_filter($green)};
+  --grey: #{$grey};
+  --grey-filter: #{color_filter($grey)};
+  --grey-shaded: #{$grey-darker};
+}

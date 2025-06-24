@@ -1,0 +1,45 @@
+$navbar-breakpoint: 900px;
+$navbar-item-hover-background-color: #0000;
+
+$button-padding-horizontal: 0.5rem;
+
+@forward "bulma/sass/utilities";
+
+// foreground
+// $white: #f1f1f1;
+$white: #fff;
+$white-bis: #f6f6f6;
+$white-ter: #fafafa;
+$white-darker: #e1e1e1;
+
+// background
+$black: #090014;
+// $black: #1f1f1f;
+$black-bis: #1a1a1a;
+$black-ter: #151515;
+$black-lighter: #2f2f2f;
+
+$primary: #ffd369;
+$secondary: #423820;
+
+// converts a color into a filter to use on svgs and pseudo-elements
+@function color_filter($color) {
+  $r: red($color) / 255;
+  $g: green($color) / 255;
+  $b: blue($color) / 255;
+  $a: alpha($color);
+
+  $svg-filter-id: "filter";
+  @return url('data:image/svg+xml;utf8,\
+    <svg xmlns="http://www.w3.org/2000/svg">\
+      <filter id="#{$svg-filter-id}" color-interpolation-filters="sRGB">\
+        <feColorMatrix type="matrix" values="\
+          0 0 0 0 #{$r}\
+          0 0 0 0 #{$g}\
+          0 0 0 0 #{$b}\
+          0 0 0 #{$a} 0\
+        "/>\
+      </filter>\
+    </svg>\
+    ##{$svg-filter-id}');
+}

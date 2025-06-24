@@ -1,0 +1,237 @@
+@use "themes.scss" as *;
+
+@use "bulma" as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap');
+
+:root {
+  font-size: 18px;
+  background-color: var(--bg);
+}
+
+body {
+  font-family: "Goldman", sans-serif;
+  color: var(--fg);
+  margin: auto;
+  padding: 0 5% 0 5%;
+}
+@media (min-width: 1300px) {
+  body {
+    max-width: 1200px;
+  }
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+h1 {
+  @extend .center;
+
+  font-size: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 4rem;
+  font-weight: bold;
+}
+
+h1 + p,
+div + p,
+section + section {
+  margin-top: 2rem;
+}
+
+h1 + div,
+p + p {
+  margin-top: 1.5rem;
+}
+
+h2 > h4 {
+  display: inline;
+  font-size: 1rem;
+}
+
+h2 > h4::before {
+  content: "\a0";
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+h2 + h3 {
+  margin-top: -1.2rem;
+  margin-bottom: 1.2rem;
+  font-weight: bold;
+}
+
+h2 span,
+h3 span {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+h2 span::before {
+  content: "\2002-\2002";
+}
+
+h3 span::before {
+  content: "\2002|\2002";
+}
+
+h2 span::before,
+h3 span::before {
+  color: var(--grey);
+}
+
+a,
+a.button.is-outlined {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a.button.is-outlined,
+a.button.is-outlined:focus {
+  border-color: var(--primary);
+  border-radius: 4px;
+  border-width: 1px;
+  padding: calc(0.5rem - 1px) .5rem;
+}
+
+main a:hover,
+a.button.is-outlined:hover {
+  color: var(--white);
+}
+
+a[href^="http"][target="_blank"] {
+  align-items: center;
+  display: inline-flex;
+}
+
+a[href^="http"][target="_blank"]:not(:has(i))::after {
+  content: url("icons/bx-link-external.svg");
+  // filter: var(--green-filter);
+  transform: scale(0.5) translate(-0.2em, -0.5em);
+  max-height: 1em;
+  max-width: 0.8em;
+}
+
+a[href^="http"][target="_blank"]:not(:has(i)):hover::after {
+  filter: var(--grey-filter);
+}
+
+ul li {
+  margin-left: 1.5em;
+}
+
+ul li::before {
+  display: inline-block;
+  content: "*\a0";
+  font-family: monospace;
+  color: var(--grey);
+  width: 1em;
+  margin-left: -1em;
+}
+
+abbr {
+  border-bottom: 1px solid var(--grey);
+}
+
+input {
+  font-family: inherit;
+}
+
+.button,
+.button:active,
+.button:focus,
+.button:focus:not(:active) {
+  color: var(--primary);
+  background: none;
+  border-color: var(--primary);
+  box-shadow: none;
+}
+
+.button:hover {
+  color: var(--fg);
+  border-color: var(--primary);
+}
+
+.collapse input[type="checkbox"] {
+  display: none;
+}
+
+.collapse .collapse-title {
+  cursor: pointer;
+}
+
+.collapse .collapse-title::after {
+  display: block;
+  content: "--more--";
+  color: var(--grey);
+  font-family: monospace;
+  margin-top: -1em;
+}
+
+.collapse:has(input[type="checkbox"]:checked) .collapse-title::after {
+  content: "--less--";
+}
+
+.collapse .collapse-title:hover::after {
+  text-decoration: underline;
+}
+
+.collapse .collapse-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+}
+
+.collapse:has(input[type="checkbox"]:checked) .collapse-content {
+  max-height: 50vh;
+  transition: max-height 0.3s ease-in;
+}
+
+[data-tooltip] {
+  position: relative;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: normal;
+  position: absolute;
+  top: 120%;
+  padding: 1px 8px;
+  border: 1px solid var(--grey-shaded);
+  border-radius: 4px;
+  background: var(--grey-shaded);
+  color: var(--fg);
+  text-align: center;
+  display: none;
+}
+
+[data-tooltip]::after {
+  content: "";
+  position: absolute;
+  top: 80%;
+  border: 10px solid;
+  border-color: transparent transparent var(--grey-shaded) transparent;
+  display: none;
+}
+
+[data-tooltip]:not(.button)::after {
+  top: 60%;
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
+  display: block;
+}
