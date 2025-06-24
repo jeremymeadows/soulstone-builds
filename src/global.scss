@@ -204,7 +204,6 @@ input {
 
 [data-tooltip]::before {
   content: attr(data-tooltip);
-  font-family: monospace;
   font-size: 0.8rem;
   font-weight: normal;
   position: absolute;

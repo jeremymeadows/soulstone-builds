@@ -1,13 +1,8 @@
 <script lang="ts">
-    import { Build, img_name } from "$lib";
+    import { img_name } from "$lib";
 
 	const { data } = $props();
-
-    let build = new Build("test");
-    build.character = "Barbarian";
-    build.weapon = "Barbaric Cleavers";
-    build.skills = [ "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage" ]
-    build.runes = [ "Weapon Master", "More XP", "Get a skill", "Extra Help", "Skeletal Mage", "Skeletal Mage", "asd" ]
+    const { build } = data;
 </script>
 
 <h1>Soulstone Builds</h1>
@@ -19,21 +14,21 @@
     <h3>{build.name}</h3>
 
     <span class="character">
-        <img src="imgs/characters/{build.character}.png" alt="{build.character}">
-        <img src="imgs/weapons/{img_name(build.weapon)}" alt="{build.weapon ?? "any"}">
+        <img src="/imgs/characters/{build.character}.png" alt="{build.character}">
+        <img src="/imgs/weapons/{img_name(build.weapon)}" alt="{build.weapon ?? "any"}">
     </span>
 
     <span class="skills">
         {#each build.skills as skill}
-            <img src="imgs/skills/{img_name(skill)}" alt="{skill}">
+            <img src="/imgs/skills/{img_name(skill)}" alt="{skill}">
         {/each}
     </span>
 
     <span class="runes">
         {#each build.runes as rune}
-            <!-- <div class="r"> -->
-            <img src="imgs/runes/RuneBuildFrame.png" alt="" class="frame">
-            <!-- <img src="imgs/runes/{img_name(rune)}" alt="{rune}" class="icon"> -->
+            <!-- <div class="stack"> -->
+                <img src="/imgs/runes/RuneBuildFrame.png" alt="" class="frame">
+                <!-- <img src="/imgs/runes/{img_name(rune)}" alt="{rune}" class="icon"> -->
             <!-- </div> -->
         {/each}
     </span>

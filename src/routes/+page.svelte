@@ -1,20 +1,9 @@
 <script lang="ts">
-    import { Build, score, sort_by, img_name } from "$lib";
+    import { score, sort_by, img_name } from "$lib";
 
-    let test_build = new Build("test");
-    test_build.character = "Barbarian";
-    test_build.weapon = "Barbaric Cleavers";
-    test_build.skills = [ "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage" ]
-    test_build.runes = [ "Weapon Master", "More XP", "Get a skill", "Extra Help", "Skeletal Mage", "Skeletal Mage", "asd" ]
-    test_build.id = "asdf";
+	const { data } = $props();
+    const { builds } = data;
 
-    let build2 = new Build("test2");
-    build2.character = "Paladin";
-    build2.weapon = "Dawnbreaker's Mace";
-    build2.skills = [ "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage", "Skeletal Mage" ]
-    build2.id = "jjjj";
-
-    let builds = [ test_build, build2 ];
     sort_by(builds, score);
 </script>
 
@@ -22,36 +11,40 @@
 <h2 class="center">Share builds for Soulstone Survivors</h2>
 
 <div class="center">
-<a class="button" href="/create">Create Build</a>
+    <a class="button" href="/builds/create">Create Build</a>
 </div>
 
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<p>| sort | search | only newest patch | character</p>
 
 <div id="featured">
     {#each builds as build}
-        <a href="{build.id}"><div class="build">
-            <h3>{build.name}</h3>
+        <a href="builds/{build.id}">
+            <div class="build">
+                <h3>{build.name}</h3>
 
-            <span class="character">
-                <img src="imgs/characters/{build.character}.png" alt="{build.character}">
-                <img src="imgs/weapons/{img_name(build.weapon)}" alt="{build.weapon ?? "any"}">
-            </span>
+                <span class="character">
+                    <img src="/imgs/characters/{img_name(build.character)}" alt="{build.character}">
+                    <img src="/imgs/weapons/{img_name(build.weapon)}" alt="{build.weapon ?? "any"}">
+                </span>
 
-            <span class="skills">
-                {#each build.skills as skill}
-                    <img src="imgs/skills/{img_name(skill)}" alt="{skill}">
-                {/each}
-            </span>
+                <span class="skills">
+                    {#each build.skills as skill}
+                        <img src="/imgs/skills/{img_name(skill)}" alt="{skill}">
+                    {/each}
+                </span>
 
-            <span class="runes">
-                {#each build.runes as rune}
-                    <!-- <div class="r"> -->
-                    <img src="imgs/runes/RuneBuildFrame.png" alt="" class="frame">
-                    <!-- <img src="imgs/runes/{img_name(rune)}" alt="{rune}" class="icon"> -->
-                    <!-- </div> -->
-                {/each}
-            </span>
-        </div></a>
+                <span class="runes">
+                    {#each build.runes as rune}
+                        <!-- <div class="stack"> -->
+                            <img src="/imgs/runes/RuneBuildFrame.png" alt="" class="frame">
+                            <!-- <img src="/imgs/runes/{img_name(rune)}" alt="{rune}" class="icon"> -->
+                        <!-- </div> -->
+                    {/each}
+                </span>
+
+                <div class="votes">Votes: {build.votes}</div>
+            </div>
+        </a>
     {/each}
 </div>
 
@@ -97,5 +90,9 @@
     .runes img:nth-child(even) {
         transform: translateY(-3.6em);
         margin: -2.2em;
+    }
+
+    .votes {
+        margin-top: -0.5em;
     }
 </style>

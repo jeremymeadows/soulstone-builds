@@ -5,7 +5,7 @@
   const title = "Soulstone Builds";
 
   const pages = {
-    "Sign In": "signin",
+    "Sign In": "/signin",
   };
 
   function toggle_menu() {
@@ -17,10 +17,6 @@
   }
 
   onMount(async () => {
-    console.log(document.location.pathname);
-    console.log(document
-      .querySelector(`.navbar-item[href="${document.location.pathname}"]`)
-  );
     document
       .querySelector(`.navbar-item[href="${document.location.pathname}"]`)
       ?.classList.add("is-current-page");

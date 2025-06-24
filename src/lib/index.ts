@@ -41,6 +41,22 @@ export class Build {
         build.votes = object.votes || 0;
         return build;
     }
+
+    pojo(): object {
+        return {
+            id: this.id,
+            name: this.name,
+            created: this.created,
+            owner: this.owner,
+            patch: this.patch,
+            character: this.character,
+            weapon: this.weapon,
+            skills: this.skills,
+            runes: this.runes,
+            notes: this.notes,
+            votes: this.votes
+        };
+    }
 }
 
 export function score(build: Build): number {
