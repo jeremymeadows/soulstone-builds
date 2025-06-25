@@ -22,7 +22,7 @@
   {@render children()}
 </main>
 
-<Footer />
+<!-- <Footer /> -->
 
 <style lang="scss">
   main {

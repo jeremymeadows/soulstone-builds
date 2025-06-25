@@ -18,81 +18,136 @@
 
 <div id="featured">
     {#each builds as build}
-        <a href="builds/{build.id}">
-            <div class="build">
+        <div class="build">
+            <a href="/builds/{build.id}">
                 <h3>{build.name}</h3>
 
-                <span class="character">
-                    <img src="/imgs/characters/{img_name(build.character)}" alt="{build.character}">
-                    <img src="/imgs/weapons/{img_name(build.weapon)}" alt="{build.weapon ?? "any"}">
-                </span>
+                <div class="columns">
+                    <div class="character column is-3">
+                        <img src="/imgs/characters/{img_name(build.character)}" alt="{build.character}" title="{build.character}">
+                        <img src="/imgs/weapons/{img_name(build.weapon)}" alt="{build.weapon}">
+                    </div>
 
-                <span class="skills">
-                    {#each build.skills as skill}
-                        <img src="/imgs/skills/{img_name(skill)}" alt="{skill}">
-                    {/each}
-                </span>
+                    <div class="skills column center">
+                        {#each build.skills as skill, i}
+                            <!-- <div class="column"> -->
+                                <button><img src="/imgs/skills/{img_name(skill)}" alt="{skill}"></button>
+                            <!-- </div> -->
+                        {/each}
+                    </div>
 
-                <span class="runes">
-                    {#each build.runes as rune}
-                        <!-- <div class="stack"> -->
-                            <img src="/imgs/runes/RuneBuildFrame.png" alt="" class="frame">
-                            <!-- <img src="/imgs/runes/{img_name(rune)}" alt="{rune}" class="icon"> -->
-                        <!-- </div> -->
-                    {/each}
-                </span>
-
-                <div class="votes">Votes: {build.votes}</div>
-            </div>
-        </a>
+                    <div class="runes column is-4">
+                        <div class="versatility center">
+                            {#each build.runes.versatility as rune}
+                                <button>
+                                    <span class="stack">
+                                        <img src="/imgs/runes/RuneBuildFrame.png" alt="" class="frame">
+                                        <img src="/imgs/runes/versatility/{img_name(rune)}" alt="" class="icon">
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+                        <div class="tenacity center">
+                            {#each build.runes.tenacity as rune}
+                                <button>
+                                    <div class="stack">
+                                        <img src="/imgs/runes/RuneBuildFrame.png" alt="" class="frame">
+                                        {#if rune}
+                                            <img src="/imgs/runes/tenacity/{img_name(rune)}" alt="" class="icon" hidden={true}>
+                                        {/if}
+                                    </div>
+                                </button>
+                            {/each}
+                        </div>
+                    </div>
+                </div>
+                <div class="votes columns">
+                    <span class="column">Votes: {build.votes}</span>
+                    <span class="column"></span>
+                    <span class="right column">Patch: {build.patch}</span>
+                </div>
+            </a>
+        </div>
     {/each}
 </div>
 
 <style lang="scss">
-    #featured {
-        background-color: #090014;
-        border-radius: 8px;
-    }
-
     .build {
         background-color: var(--bg);
-        border: 2px solid var(--secondary);
+        border: 2px solid var(--primary);
         border-radius: 8px;
-        height: 156px;
         padding: 6px;
-        margin-bottom: 8px;
-    }
-
-    .build:hover {
-        border-color: var(--primary);
-        cursor: pointer;
-    }
-
-    .build img {
-        height: 80px;
     }
 
     h3 {
-        margin-top: 0.2em;
-        margin-left: 1em;
-        margin-bottom: 0.5em;
+        margin-bottom: 0;
+    }
+
+    img {
+        cursor: pointer;
+    }
+
+    .character img {
+        height: 100px;
+    }
+
+    .skills {
+        transform: translateY(1em);
     }
 
     .skills img {
-        height: 64px;
         width: 64px;
+    }
+
+    .runes img.frame {
+        width: 60px;
         margin: 0.2em;
     }
 
-    .runes img:nth-child(odd) {
-        transform: translateY(1.0em) scaleY(-1);
-    }
-    .runes img:nth-child(even) {
-        transform: translateY(-3.6em);
-        margin: -2.2em;
+    .runes img.icon {
+        width: 100%;
+        height: 100%;
     }
 
+    .runes .versatility {
+        margin-bottom: -5em;
+        transform: translateY(-0.5em);
+
+        .icon {
+            transform: translateY(-0.4em);
+        }
+    }
+
+    .runes .tenacity {
+        transform: translateY(2.4em);
+
+        .frame {
+            transform: scaleY(-1);
+        }
+    }
+
+    .stack {
+        position: relative;
+        display: inline-block;
+
+        .frame {
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+    
     .votes {
-        margin-top: -0.5em;
+        margin-top: -2.5em;
+    }
+
+    .right {
+        text-align: right;
     }
 </style>

@@ -1,0 +1,181 @@
+{
+  "any": {
+    "weapons": [ "any" ]
+  },
+  "Barbarian": {
+    "weapons": [
+      "Barbaric Cleavers",
+      "Skullbreaker",
+      "Tempest Battle Axes",
+      "Bloodgod's Legacy"
+    ]
+  },
+  "Pyromancer": {
+    "weapons": [
+      "Pyromancer's Firestarter",
+      "Storm Caller",
+      "Shard of Chaos",
+      "Damnatus Spire of Shadows"
+    ]
+  },
+  "Hound Master": {
+    "weapons": [
+      "Rusted Blaster",
+      "Riflemens Vengeance",
+      "Toxic Cannon",
+      "Dragonfire Scattergun"
+    ]
+  },
+  "Spellblade": {
+    "weapons": [
+      "Silver Spellblade",
+      "Arcane Scimitar",
+      "Icelord's Blade",
+      "Scorching Edge"
+    ]
+  },
+  "Arcane Weaver": {
+    "weapons": [
+      "Arcane Staff",
+      "Ignis, Greatstaff of Despair",
+      "Benedicto, Staff of Dawn",
+      "Glacies, Rod of Eternal Ice"
+    ]
+  },
+  "Sentinel": {
+    "weapons": [
+      "Huntress Bow",
+      "Siege Recurve Bow",
+      "Misery's End",
+      "Noxious Longbow"
+    ]
+  },
+  "Paladin": {
+    "weapons": [
+      "Sacred Warhammer",
+      "Harbinger of Justice",
+      "Arcane Scepter of Light",
+      "Dawnbreaker's Mace"
+    ]
+  },
+  "Chaoswalker": {
+    "weapons": [
+      "Skull of Draxiz",
+      "Artifact Of Corruption",
+      "Flamewalker's Spire",
+      "Azramiel's Blessing"
+    ]
+  },
+  "Beastmaster": {
+    "weapons": [
+      "Wild Cleaver",
+      "Nature's Fury",
+      "Bonecrusher",
+      "Widow's Embrace"
+    ]
+  },
+  "Assassin": {
+    "weapons": [
+      "Worn Daggers",
+      "Curved Daggers",
+      "Grenadier's Mark",
+      "Edge of Doom"
+    ]
+  },
+  "Elementalist": {
+    "weapons": [
+      "Scepter of Thunder",
+      "Scepter of Frost",
+      "Scepter of Flame",
+      "Scepter of Nature"
+    ]
+  },
+  "Legionnaire": {
+    "weapons": [
+      "Light Spear",
+      "Jupiter's Reach",
+      "Fang of Vipernus",
+      "Vulcan's Impaler"
+    ]
+  },
+  "Necromancer": {
+    "weapons": [
+      "Wooden Scythe",
+      "Guardian of Souls",
+      "Noxious Reaper",
+      "Grimtalon's Scourge"
+    ]
+  },
+  "Death Knight": {
+    "weapons": [
+      "Unholy Claymore",
+      "Greatsword of Corruption",
+      "Last Sentence",
+      "Wintersorrow"
+    ]
+  },
+  "Monkey King": {
+    "weapons": [
+      "Immortal's Staff",
+      "Cloudseeker",
+      "Trickster's Boomstick",
+      "Might of the Mountains"
+    ]
+  },
+  "Engineer": {
+    "weapons": [
+      "Ammo Devourer",
+      "EZ Robot Launcher XT-1",
+      "Volt Cannon",
+      "Bomb Launcher QT-22"
+    ]
+  },
+  "Myrmidon": {
+    "weapons": [
+      "Song of the Sirens",
+      "Chant of the Claws",
+      "Hymn of the Depths",
+      "Wail of the Reefs"
+    ]
+  },
+  "Demon Hunter": {
+    "weapons": [
+      "Bloodbane Crossbow",
+      "Hellfire Cannon",
+      "Demonic Launcher",
+      "Bonereaper"
+    ]
+  },
+  "Cursed Captain": {
+    "weapons": [
+      "Iron Tide",
+      "Jaws of the Abyss",
+      "Admiral's Might",
+      "Wrath of the Old Gods"
+    ]
+  },
+  "Shaman": {
+    "weapons": [
+      "Spinevine Whip",
+      "Starweaver's Tail",
+      "Maldrakar's Flamelash",
+      "Tharuun's Lasher"
+    ]
+  },
+  "Machinist": {
+    "weapons": [
+      "Soulcore MK-V",
+      "M249 HSG .50 +4",
+      "Coremelter GTX Ti",
+      "Electrotaser RX"
+    ]
+  },
+  "Samurai": {
+    "weapons": [
+      "Veilpiercer",
+      "Shadowfang",
+      "Executioner's Burden",
+      "Last Ember"
+    ]
+  }
+}

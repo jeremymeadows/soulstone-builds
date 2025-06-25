@@ -70,7 +70,7 @@ export function score(build: Build): number {
 }
 
 export function img_name(name?: string): string {
-    return (name ?? "any").replace(/[^A-Za-z]/g, "") + ".png";
+    return (name ?? "default").replace(/[^A-Za-z0-9]/g, "") + ".png";
 }
 
 export function sort_by<T>(objects: T[], lambda: (val: any) => number | string): T[] {
