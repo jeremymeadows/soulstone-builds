@@ -5,13 +5,11 @@ const table = sqliteTable;
 
 export const users = table('users', {
   id: text('id').primaryKey(),
-  email: text('email').notNull().unique(),
-  username: text('username').notNull(),
-  password: text('password').notNull(), 
+  profile: text('profile', { mode: 'json' }).notNull(),
 });
 
 export const sessions = table('sessions', {
-  session_id: text('session_id').primaryKey(),
+  id: text('id').primaryKey(),
   user_id: text('user_id').references(() => users.id),
   expires: integer('expires', { mode: 'timestamp' }).notNull(),
 });

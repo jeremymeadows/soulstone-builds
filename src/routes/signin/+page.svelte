@@ -1,17 +1,15 @@
-<script lang="ts">
+<script>
+    import Icon from '$lib/components/Icon.svelte';
 </script>
 
-<h1>Sign In</h1>
-<h2 class="center">Sign In or Create Account to create and share builds!</h2>
-
-
-<div class="center">
-    <input type="text" placeholder="email" />
-    <br />
-    <input type="password" placeholder="password" />
-    <br />
-    <button class="button is-primary">Sign In</button>
-</div>
+<button class="button center">
+    <a href="/signin/steamauth">
+        <Icon name="fa-steam" size="1.5em"/>&emsp;Sign in with Steam
+    </a>
+</button>
 
 <style lang="scss">
+    button {
+        font-size: 1.5em;
+    }
 </style>

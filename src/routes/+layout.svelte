@@ -3,8 +3,15 @@
   import Footer from "$lib/components/Footer.svelte";
 
   import '/src/global.scss';
+	// import { user } from "$lib/stores.js";
 
-  let { children } = $props();
+  const { children, data } = $props();
+  
+  // console.log('layout data:', data);
+  
+  // if (data.profile) {
+  //   user.set(data.profile);
+  // }
 </script>
 
 <svelte:head>

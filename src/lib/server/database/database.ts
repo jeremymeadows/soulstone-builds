@@ -6,12 +6,10 @@ import { count, eq } from "drizzle-orm";
 import { Result } from '$lib';
 
 import { DatabaseError } from './errors';
-// import { queries } from './queries';
-import * as queries from './queries/builds';
+import queries from './queries';
 import * as schema from './schema';
 
 export class Database {
-  // [key: string]: Result<any, Error>;
   [key: string]: any;
   protected db: BunSQLiteDatabase<typeof schema>;
 
@@ -20,34 +18,32 @@ export class Database {
     Object.assign(this, { ...queries });
   }
 
-  async init() {
-    let users = this.db.select({ count: count() }).from(schema.users).get()!;
-    if (users.count === 0) {
-      this.db.insert(schema.users).values({
-        id: "0",
-        email: "admin@jeremymeadows.dev",
-        username: "admin",
-        password: await Bun.password.hash("admin"),
-      }).run();
-    }
-  }
+  // async init() {
+  //   let users = this.db.select({ count: count() }).from(schema.users).get()!;
+  //   if (users.count === 0) {
+  //     this.db.insert(schema.users).values({
+  //       id: "admin",
+  //       pr: await Bun.password.hash("admin"),
+  //     }).run();
+  //   }
+  // }
 
   get_user(session_id: string): Result<any, DatabaseError> {
     if (!session_id) {
       return Result.Err(DatabaseError.AuthenticationError);
     }
 
-    let res = this.db.select()
+    let res = this.db.select({ profile: schema.users.profile })
       .from(schema.users)
       .innerJoin(schema.sessions, eq(schema.users.id, schema.sessions.user_id))
-      .where(eq(schema.sessions.session_id, session_id))
+      .where(eq(schema.sessions.id, session_id))
       .get();
 
     if (!res) {
       return Result.Err(DatabaseError.ConnectionError);
     }
 
-    return Result.Ok(res.users);
+    return Result.Ok(res.profile);
   }
 
   async seed() {
@@ -66,7 +62,5 @@ export class Database {
   }
 }
 
-
 export const db = new Database("db.sqlite", { create: true });
-await db.init();
-// await db.seed();
+// await db.init();

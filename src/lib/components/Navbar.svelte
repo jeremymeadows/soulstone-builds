@@ -1,12 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { navigating } from "$app/state";
+  import { user } from "$lib/stores";
 
   const title = "Soulstone Builds";
-
-  const pages = {
+  let pages: object = $state({
     "Sign In": "/signin",
-  };
+  });
+
+  let authenticated = false;
 
   function toggle_menu() {
     const menu = document.getElementById("burger-menu")!;
@@ -20,6 +22,15 @@
     document
       .querySelector(`.navbar-item[href="${document.location.pathname}"]`)
       ?.classList.add("is-current-page");
+
+    authenticated = localStorage.getItem("profile") !== null;
+    if (authenticated) {
+      pages = {
+        "Create Build": "/builds/create",
+        "My Builds": "/builds",
+        "Sign Out": "/signout",
+      }
+    }
   });
 
   $effect(() => {
