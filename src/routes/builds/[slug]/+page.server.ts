@@ -3,6 +3,7 @@ import fs from 'fs';
 import { redirect, type Load } from '@sveltejs/kit';
 
 import { db } from '$lib/server/database';
+import { characters, skills, runes } from '$lib/server/options';
 
 export const load: Load = async ({ params, cookies }: any) => {
 	let build = {
@@ -34,10 +35,5 @@ export const load: Load = async ({ params, cookies }: any) => {
 		build = db.get_build(params.slug).expect();
 	}
 
-	return {
-		build,
-		characters: JSON.parse(fs.readFileSync('static/characters.json', 'utf-8')),
-		skills: JSON.parse(fs.readFileSync('static/skills.json', 'utf-8')),
-		runes: JSON.parse(fs.readFileSync('static/runes.json', 'utf-8')),
-	};
+	return { build, characters, skills, runes };
 };

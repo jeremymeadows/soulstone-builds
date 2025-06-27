@@ -5,6 +5,7 @@
 - search/sort/filter builds
 - vote system
 - show own builds
+- name builds
 
 ## before 1.0
 - search/filter active skills
@@ -16,3 +17,4 @@
     - thrust versatility skills (legionaire)
 - cut bounding box on runes cause they overlap
 - delete builds
+- sending all 100s of images at once on every request seems bad, maybe request once and cache in browser?
