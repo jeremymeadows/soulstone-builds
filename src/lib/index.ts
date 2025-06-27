@@ -6,57 +6,18 @@ export const PATCHES = [
 
 export { Result } from "./utils/result";
 
-export class Build {
-    id: string = "";
-    name: string;
-    created: number;
-    owner: string | undefined;
-    patch: string = PATCHES[-1];
-    character: string | undefined;
-    weapon: string | undefined;
-    skills: string[] = [];
-    runes: string[] = [];
-    notes: string = "";
-    votes: number = 0;
-
-    constructor(name: string) {
-        this.name = name;
-        this.created = Math.floor(Date.now() / 1000);
-        // this.id = crypto.randomBytes(24).toString('base64');
-        // this.id = new Buffer(crypto.getRandomValues(new Uint8Array(24))).toString('base64');
-        // this.id = "todo";
-    }
-
-    static from(object: any): Build {
-        let build = new Build(object.name);
-        build.id = object.id;
-        build.created = object.created;
-        build.owner = object.owner;
-        build.patch = object.patch;
-        build.character = object.character;
-        build.weapon = object.weapon;
-        build.skills = object.skills || [];
-        build.runes = object.runes || [];
-        build.notes = object.notes || "";
-        build.votes = object.votes || 0;
-        return build;
-    }
-
-    pojo(): object {
-        return {
-            id: this.id,
-            name: this.name,
-            created: this.created,
-            owner: this.owner,
-            patch: this.patch,
-            character: this.character,
-            weapon: this.weapon,
-            skills: this.skills,
-            runes: this.runes,
-            notes: this.notes,
-            votes: this.votes
-        };
-    }
+export type Build = {
+    id: string,
+    name: string,
+    created: Date,
+    owner: string,
+    patch: string,
+    character: string,
+    weapon: string,
+    skills: string[] | any,
+    runes: object | any,
+    notes: string,
+    votes: number,
 }
 
 export function score(build: Build): number {
@@ -64,7 +25,7 @@ export function score(build: Build): number {
     const PATCH_DECAY = 0.5;
 
     let patch_weight = 1 / ((PATCHES.length - PATCHES.indexOf(build.patch)) * PATCH_DECAY);
-    let build_age = Math.floor((build.created - Math.floor(Date.now() / 1000)) / 3600);
+    let build_age = Math.floor((build.created.getSeconds() - new Date().getSeconds()) / 3600);
 
     return (build.votes - 1) / ((build_age + 2) ** GRAVITY) * patch_weight;
 }

@@ -1,6 +1,6 @@
 import { count, eq } from 'drizzle-orm';
 
-import { Build, Result } from '$lib';
+import { type Build, Result } from '$lib';
 
 import { Database } from '../database';
 import * as schema from '../schema';
@@ -14,7 +14,7 @@ export function get_builds(this: Database): Result<Build[]> {
 
     return Result.Ok(builds.map((build) => {
         let vote = votes.find(v => v.build_id === build.id);
-        return Build.from({ ...build, votes: (vote?.count ?? 0) });
+        return { ...build, votes: (vote?.count ?? 0) };
     }));
 }
 
@@ -29,5 +29,13 @@ export function get_build(this: Database, id: string): Result<Build> {
         .where(eq(schema.builds.id, id))
         .get()!.count;
 
-    return Result.Ok(Build.from({...build, votes}));
+    return Result.Ok({...build, votes});
+}
+
+export function save_build(this: Database, data: Build): Result<string> {
+    this.db.insert(schema.builds).values(data).onConflictDoUpdate({
+        target: schema.builds.id,
+        set: data
+    }).run();
+    return Result.Ok(data.id);
 }

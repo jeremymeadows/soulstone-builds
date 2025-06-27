@@ -14,7 +14,7 @@ export class Database {
   protected db: BunSQLiteDatabase<typeof schema>;
 
   constructor(file: string, options: any) {
-    this.db = drizzle(new BunSqlite(file, options), { schema })
+    this.db = drizzle(new BunSqlite(file, options), { schema });
     Object.assign(this, { ...queries });
   }
 

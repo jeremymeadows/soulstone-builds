@@ -3,24 +3,17 @@
   import Footer from "$lib/components/Footer.svelte";
 
   import '/src/global.scss';
-	// import { user } from "$lib/stores.js";
 
-  const { children, data } = $props();
-  
-  // console.log('layout data:', data);
-  
-  // if (data.profile) {
-  //   user.set(data.profile);
-  // }
+  const { children } = $props();
 </script>
 
 <svelte:head>
   <title>Soulstone Builds</title>
 
   <meta name="author" content="Jeremy Meadows" />
-  <meta name="description" content="150 words" />
-  <meta name="url" content="jeremymeadows.github.io" />
-  <meta name="keywords" content="Jeremy Meadows, Jeremy, Meadows, Soulstone, Survivors, Builds" />
+  <meta name="description" content="Create, share, and discover builds for Soulstone Survivors." />
+  <meta name="url" content="soulstonebuilds.jeremymeadows.dev" />
+  <meta name="keywords" content="Soulstone, Survivors, Builds" />
 </svelte:head>
 
 <Navbar />

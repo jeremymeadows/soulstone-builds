@@ -5,6 +5,6 @@ import type { Build } from '$lib';
 
 export const load: Load = () => {
 	return {
-		builds: db.get_builds().expect().map((build: Build) => build.pojo()),
+		builds: db.get_builds().expect().map((build: Build) => build),
 	};
 };

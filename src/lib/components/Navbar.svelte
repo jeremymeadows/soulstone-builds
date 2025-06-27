@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { navigating } from "$app/state";
-  import { user } from "$lib/stores";
 
   const title = "Soulstone Builds";
   let pages: object = $state({
@@ -78,7 +77,7 @@
 
     <div class="navbar-end">
       {#each Object.entries(pages) as [page, url]}
-        <a href={url} class="navbar-item">{page}</a>
+        <a href={url} class="navbar-item" data-sveltekit-preload-data={url !== '/signout' ? "off" : ""}>{page}</a>
       {/each}
     </div>
   </div>

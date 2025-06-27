@@ -5,8 +5,11 @@
     const { profile } = data;
 
     onMount(() => {
-    console.log('steamauth return data:', profile);
-        localStorage.setItem('profile', JSON.stringify(profile));
+        if (profile) {
+            localStorage.setItem('profile', JSON.stringify(profile));
+        } else {
+            localStorage.removeItem('profile')
+        }
         document.location.href = '/';
     })
 </script>
