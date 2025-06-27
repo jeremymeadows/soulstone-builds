@@ -5,7 +5,7 @@ networks:
 services:
   web:
     container_name: soulstone_builds
-    image: soulstone_builds:latest
+    image: soulstone-builds:latest
     build: .
     networks:
       - vnet

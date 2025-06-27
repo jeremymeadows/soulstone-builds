@@ -9,14 +9,13 @@ export const POST = async ({ request, cookies }: any) => {
     }
 
     let build = await request.json();
-    build.id ??= randomBytes(24).toBase64();
+    build.id ??= randomBytes(16).toHex();
     build.created = new Date(build.created);
 
     // todo check auth
 
     return db.save_build(build).match({
         ok: (build_id: string) => {
-            console.log(build_id)
             return json(build_id)
         },
         err: (e: Error) => {

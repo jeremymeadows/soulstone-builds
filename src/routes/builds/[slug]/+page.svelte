@@ -18,11 +18,9 @@
 	}
 
 	function save() {
-		console.log(build);
 		axios
 			.post(page.url.pathname, build)
 			.then((res) => {
-				console.log(res);
 				window.location.href = `/builds/${res.data}`;
 			})
 			.catch((error) => {
@@ -36,12 +34,7 @@
 			editable = profile.steamid === build.owner;
 		}
 
-		console.log(build.created);
-		console.log(typeof build.created);
-		console.log(build.created.getTime());
-
 		if (editable) {
-			// Add a click event on buttons to open a specific modal
 			(document.querySelectorAll('[data-modal-open]') || []).forEach((trigger) => {
 				const modal = trigger.getAttribute('data-modal-open')!;
 				const target = document.getElementById(modal)!;
@@ -51,7 +44,6 @@
 				});
 			});
 
-			// Add a click event on buttons to open a specific modal
 			(document.querySelectorAll('[data-modal-close]') || []).forEach((trigger) => {
 				const modal = trigger.getAttribute('data-modal-close')!;
 				const target = document.getElementById(modal)!;
@@ -61,7 +53,6 @@
 				});
 			});
 
-			// Add a keyboard event to close all modals
 			document.addEventListener('keydown', (event) => {
 				if (event.key === 'Escape') {
 					(document.querySelectorAll('.modal') || []).forEach((modal) => {

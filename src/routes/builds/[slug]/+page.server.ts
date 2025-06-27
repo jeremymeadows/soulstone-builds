@@ -26,7 +26,7 @@ export const load: Load = async ({ params, cookies }: any) => {
 		const user_id = db.get_user(session_id).value_or(null)?.steamid;
 
 		if (!user_id) {
-			redirect(300, '/signin');
+			return redirect(300, '/signin');
 		}
 
 		build.owner = user_id;

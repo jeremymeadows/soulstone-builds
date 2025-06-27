@@ -3,7 +3,24 @@ import { RelyingParty } from 'openid';
 import { STEAM_KEY } from '$env/static/private';
 import { db } from '$lib/server/database/database.js';
 
-const demo = { }
+const demo = {
+    steamid: "76561198345569146",
+    communityvisibilitystate: 3,
+    profilestate: 1,
+    personaname: "Jer",
+    profileurl: "https://steamcommunity.com/profiles/76561198345569146/",
+    avatar: "https://avatars.steamstatic.com/e20af94a9b8ed08f48298d9df8f09e27ff0de63f.jpg",
+    avatarmedium: "https://avatars.steamstatic.com/e20af94a9b8ed08f48298d9df8f09e27ff0de63f_medium.jpg",
+    avatarfull: "https://avatars.steamstatic.com/e20af94a9b8ed08f48298d9df8f09e27ff0de63f_full.jpg",
+    avatarhash: "e20af94a9b8ed08f48298d9df8f09e27ff0de63f",
+    lastlogoff: 1740953594,
+    personastate: 0,
+    realname: "Jeremy Meadows",
+    primaryclanid: "103582791429521408",
+    timecreated: 1479870765,
+    personastateflags: 0,
+    loccountrycode: "IE",
+}
 
 async function get_profile(steamid: string): Promise<{ steamid: string, personaname: string, avatar: string, avatarfull: string, realname: string }> {
     const res = await fetch(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${STEAM_KEY}&steamids=${steamid}`);
@@ -43,11 +60,9 @@ export async function GET({ url, cookies }) {
                 } else {
                     let steamid = result.claimedIdentifier!.match(/\d+$/)![0];
                     let profile = (await get_profile(steamid)) || { steamid: steamid, personaname: `user${steamid}` };
-                    // console.log(profile);
 
                     db.signin(steamid, profile).match({
                         ok: ({session_id, expires}: { session_id: string, expires: Date }) => {
-                            // console.log(session_id, expires)
                             cookies.set('session', session_id, { path: '/', expires });
                             resolve(Response.redirect('/signin/steamauth/return', 303))
                         },
