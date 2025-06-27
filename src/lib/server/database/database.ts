@@ -1,11 +1,9 @@
 import { Database as BunSqlite } from 'bun:sqlite';
-import { drizzle } from "drizzle-orm/bun-sqlite";
-import type { BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite';
-import { count, eq } from "drizzle-orm";
+import { type BunSQLiteDatabase, drizzle } from "drizzle-orm/bun-sqlite";
+import { sql, eq } from "drizzle-orm";
 
 import { Result } from '$lib';
 
-import { DatabaseError } from './errors';
 import queries from './queries';
 import * as schema from './schema';
 
@@ -18,19 +16,16 @@ export class Database {
     Object.assign(this, { ...queries });
   }
 
-  // async init() {
-  //   let users = this.db.select({ count: count() }).from(schema.users).get()!;
-  //   if (users.count === 0) {
-  //     this.db.insert(schema.users).values({
-  //       id: "admin",
-  //       pr: await Bun.password.hash("admin"),
-  //     }).run();
-  //   }
-  // }
+  async init() {
+    let exists = await this.db.$count(sql`sqlite_master`);
+    if (!exists) {
+      await Bun.$`bunx drizzle-kit push`;
+    }
+  }
 
-  get_user(session_id: string): Result<any, DatabaseError> {
+  get_user(session_id: string): Result<any> {
     if (!session_id) {
-      return Result.Err(DatabaseError.AuthenticationError);
+      return Result.Err(new Error("failed to get user: no session_id"));
     }
 
     let res = this.db.select({ profile: schema.users.profile })
@@ -40,27 +35,12 @@ export class Database {
       .get();
 
     if (!res) {
-      return Result.Err(DatabaseError.ConnectionError);
+      return Result.Err(new Error("failed to get user: invalid session_id"));
     }
 
     return Result.Ok(res.profile);
   }
-
-  async seed() {
-    let users = this.db.select({ count: count() }).from(schema.users).get()!;
-    if (users.count > 1) { return }
-
-    let data = await Bun.file("src/lib/server/database/demo_data.json").json();
-    await this.db.transaction(async (tx) => {
-      Object.keys(data).forEach(async (name: string) => {
-        console.log(`Seeding ${data[name].length} records into ${name}`);
-        if (data[name].length > 0) {
-          await tx.insert((schema as any)[name]).values(data[name]);
-        }
-      });
-    });
-  }
 }
 
 export const db = new Database("db.sqlite", { create: true });
-// await db.init();
+await db.init();

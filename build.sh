@@ -3,7 +3,7 @@
 USER=root
 REMOTE_HOST=vps.jeremymeadows.dev
 IDENTITY_KEY=~/.ssh/vps
-APP_ROOT=/srv/sites/souldstone_builds
+APP_ROOT=/srv/sites/soulstone_builds
 
 name=$(npm pkg get name | tr -d '"')
 version=$(npm pkg get version | tr -d '"')
@@ -22,7 +22,7 @@ if [ "$1" = "--deploy" ]; then
   scp -i $IDENTITY_KEY docker-compose.yaml $USER@$REMOTE_HOST:$APP_ROOT
   ssh -i $IDENTITY_KEY $USER@$REMOTE_HOST "docker image load" < ${name}-$version.tar
   ssh -i $IDENTITY_KEY $USER@$REMOTE_HOST << END
-    cd /srv/sites/shortr
+    cd $APP_ROOT
     touch db.sqlite
 
     docker image tag $name:$version $name:latest

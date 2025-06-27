@@ -107,22 +107,21 @@ a.button.is-outlined:hover {
   color: var(--white);
 }
 
-a[href^="http"][target="_blank"] {
-  align-items: center;
-  display: inline-flex;
-}
+// a[href^="http"][target="_blank"] {
+//   align-items: center;
+//   display: inline-flex;
+// }
 
-a[href^="http"][target="_blank"]:not(:has(i))::after {
-  content: url("icons/bx-link-external.svg");
-  // filter: var(--green-filter);
-  transform: scale(0.5) translate(-0.2em, -0.5em);
-  max-height: 1em;
-  max-width: 0.8em;
-}
+// a[href^="http"][target="_blank"]:not(:has(i))::after {
+//   content: url("icons/bx-link-external.svg");
+//   transform: scale(0.5) translate(-0.2em, -0.5em);
+//   max-height: 1em;
+//   max-width: 0.8em;
+// }
 
-a[href^="http"][target="_blank"]:not(:has(i)):hover::after {
-  filter: var(--grey-filter);
-}
+// a[href^="http"][target="_blank"]:not(:has(i)):hover::after {
+//   filter: var(--grey-filter);
+// }
 
 ul li {
   margin-left: 1.5em;

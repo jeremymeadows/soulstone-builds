@@ -21,7 +21,7 @@ export const load: Load = async ({ params, cookies }: any) => {
 		notes: ""
 	};
 
-	if (params.slug === "create") {
+	if (params.slug === "+") {
 		const session_id = cookies.get('session');
 		const user_id = db.get_user(session_id).value_or(null)?.steamid;
 

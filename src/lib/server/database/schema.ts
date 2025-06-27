@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, primaryKey, foreignKey, integer, text } from "drizzle-orm/sqlite-core";
+import { sqliteTable, primaryKey, integer, text } from "drizzle-orm/sqlite-core";
 
 const table = sqliteTable;
 

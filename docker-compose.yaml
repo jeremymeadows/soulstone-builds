@@ -1,0 +1,19 @@
+networks:
+  vnet:
+    external: true
+
+services:
+  web:
+    container_name: soulstone_builds
+    image: soulstone_builds:latest
+    build: .
+    networks:
+      - vnet
+    environment:
+      - 'HOST=0.0.0.0'
+      - 'PORT=3000'
+    volumes:
+      - type: bind
+        source: ./db.sqlite
+        target: /app/db.sqlite
+    restart: always

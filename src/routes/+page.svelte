@@ -11,7 +11,7 @@
 <h2 class="center">Share builds for Soulstone Survivors</h2>
 
 <div class="center">
-    <a class="button" href="/builds/create">Create Build</a>
+    <a class="button" href="/builds/+">Create Build</a>
 </div>
 
 <p>| sort | search | only newest patch | character</p>
@@ -29,10 +29,8 @@
                     </div>
 
                     <div class="skills column center">
-                        {#each build.skills as skill, i}
-                            <!-- <div class="column"> -->
-                                <button><img src="/imgs/skills/{img_name(skill)}" alt="{skill}"></button>
-                            <!-- </div> -->
+                        {#each build.skills as skill}
+                            <button><img src="/imgs/skills/{img_name(skill)}" alt="{skill}"></button>
                         {/each}
                     </div>
 
