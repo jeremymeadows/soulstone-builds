@@ -1,4 +1,4 @@
-import { count, eq } from 'drizzle-orm';
+import { count, eq, and } from 'drizzle-orm';
 
 import { type Build, Result } from '$lib';
 
@@ -11,10 +11,14 @@ export function get_builds(this: Database): Result<Build[]> {
         .from(schema.votes)
         .groupBy(schema.votes.build_id)
         .all();
+    let usernames = this.db.select({ id: schema.users.id, name: schema.users.name })
+        .from(schema.users)
+        .all();
 
     return Result.Ok(builds.map((build) => {
         let vote = votes.find(v => v.build_id === build.id);
-        return { ...build, votes: (vote?.count ?? 0) };
+        let user = usernames.find(u => u.id === build.user_id);
+        return { ...build, user_name: (user?.name ?? `user${build.user_id}`), votes: (vote?.count ?? 0) };
     }));
 }
 
@@ -24,12 +28,17 @@ export function get_build(this: Database, id: string): Result<Build> {
         return Result.Err(new Error("build not found"));
     }
 
-    let votes = this.db.select({ count: count() })
-        .from(schema.builds)
-        .where(eq(schema.builds.id, id))
+    let votes = this.db.select({ count: count(schema.votes.user_id) })
+        .from(schema.votes)
+        .where(eq(schema.votes.build_id, id))
+        .groupBy(schema.votes.build_id)
         .get()!.count;
+    let user = this.db.select({ name: schema.users.name })
+        .from(schema.users)
+        .where(eq(schema.users.id, build.user_id))
+        .get()!.name;
 
-    return Result.Ok({...build, votes});
+    return Result.Ok({...build, user_name: user, votes});
 }
 
 export function save_build(this: Database, data: Build): Result<string> {
@@ -38,4 +47,26 @@ export function save_build(this: Database, data: Build): Result<string> {
         set: data
     }).run();
     return Result.Ok(data.id);
+}
+
+export function delete_build(this: Database, id: string): Result<null> {
+    this.db.delete(schema.builds).where(eq(schema.builds.id, id)).run();
+    return Result.Ok(null);
+}
+
+export function has_vote(this: Database, build_id: string, user_id: string): Result<boolean> {
+    let exists = this.db.select({ exists: count() })
+        .from(schema.votes)
+        .where(and(eq(schema.votes.build_id, build_id), eq(schema.votes.user_id, user_id)))
+        .get()!.exists > 0;
+    return Result.Ok(exists);
+}
+
+export function vote_build(this: Database, build_id: string, user_id: string, vote: boolean): Result<null> {
+    if (vote) {
+        this.db.insert(schema.votes).values({ user_id, build_id }).onConflictDoNothing().run();
+    } else {
+        this.db.delete(schema.votes).where(and(eq(schema.votes.build_id, build_id), eq(schema.votes.user_id, user_id))).run();
+    }
+    return Result.Ok(null);
 }

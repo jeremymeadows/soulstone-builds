@@ -7,7 +7,7 @@
     sort_by(builds, score);
 </script>
 
-<h1>Soulstone Builds</h1>
+<h1>Soulstone Builds<aside style="font-size: 1rem">*still in beta</aside></h1>
 <h2 class="center">Share builds for Soulstone Survivors</h2>
 
 <div class="center">
@@ -20,7 +20,7 @@
     {#each builds as build}
         <div class="build">
             <a href="/builds/{build.id}">
-                <h3>{build.name}</h3>
+                <h3>{build.name}<span style="color: var(--fg)">{build.user_name}</span></h3>
 
                 <div class="columns">
                     <div class="character column is-3">

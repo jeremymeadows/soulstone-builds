@@ -22,7 +22,7 @@
       .querySelector(`.navbar-item[href="${document.location.pathname}"]`)
       ?.classList.add("is-current-page");
 
-    authenticated = localStorage.getItem("profile") !== null;
+    authenticated = localStorage.getItem("user") !== null;
     if (authenticated) {
       pages = {
         "Create Build": "/builds/+",

@@ -9,15 +9,16 @@ export { Result } from "./utils/result";
 export type Build = {
     id: string,
     name: string,
-    created: Date,
-    owner: string,
+    user_id: string,
+    user_name?: string,
+    timestamp: Date,
     patch: string,
     character: string,
     weapon: string,
-    skills: string[] | any,
+    skills: string[6] | any,
     runes: object | any,
     notes: string,
-    votes: number,
+    votes?: number,
 }
 
 export function score(build: Build): number {
@@ -25,9 +26,9 @@ export function score(build: Build): number {
     const PATCH_DECAY = 0.5;
 
     let patch_weight = 1 / ((PATCHES.length - PATCHES.indexOf(build.patch)) * PATCH_DECAY);
-    let build_age = Math.floor((build.created.getSeconds() - new Date().getSeconds()) / 3600);
+    let build_age = Math.floor((build.timestamp.getSeconds() - new Date().getSeconds()) / 3600);
 
-    return (build.votes - 1) / ((build_age + 2) ** GRAVITY) * patch_weight;
+    return (build.votes! - 1) / ((build_age + 2) ** GRAVITY) * patch_weight;
 }
 
 export function img_name(name?: string): string {

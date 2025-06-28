@@ -1,18 +1,15 @@
 # todo list
 
 ## before live deployment
-- check auth when saving build (`/builds/[slug]/+server.ts`)
 - search/sort/filter builds
-- vote system
 - show own builds
-- name builds
 
 ## before 1.0
+- use view to query data (drizzle studio seems to crash with views)
 - search/filter active skills
-- only selecting the first weapon closes modal
+- only selecting the first weapon closes modal (but only sometimes :/)
 - missing images
     - engineer runes
     - thrust versatility skills (legionaire)
 - cut bounding box on runes cause they overlap
-- delete builds
 - sending all 100s of images at once on every request seems bad, maybe request once and cache in browser?

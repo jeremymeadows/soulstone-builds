@@ -4,36 +4,65 @@
 
 	import { page } from '$app/state';
 	import { img_name } from '$lib';
+	import Icon from '$lib/components/Icon.svelte';
 
 	const { data } = $props();
-	const { characters, skills, runes, build: orig_build } = data;
+	const { editable, characters, skills, runes } = data;
 
-	let build = $state(orig_build);
-	let editable = $state(false);
-	let dirty = $derived(JSON.stringify(orig_build) !== JSON.stringify(build));
+	let saved_build = data.build;
+	let build = $state(data.build);
+	let liked = $state(data.liked);
+
+	let dirty = $derived(JSON.stringify(saved_build) !== JSON.stringify(build));
 	let ndx = 0;
 
 	function reset() {
-		build = orig_build;
+		build = saved_build;
 	}
 
 	function save() {
 		axios
 			.post(page.url.pathname, build)
 			.then((res) => {
-				window.location.href = `/builds/${res.data}`;
+				if (!build.id) {
+					window.location.href = `/builds/${res.data}`;
+				}
+				saved_build = $state.snapshot(build);
+				dirty = false;
 			})
 			.catch((error) => {
 				console.error('Error saving build:', error);
 			});
 	}
 
-	onMount(() => {
-		if (localStorage.getItem('profile')) {
-			const profile = JSON.parse(localStorage.getItem('profile')!);
-			editable = profile.steamid === build.owner;
+	function del() {
+		if (confirm('Are you sure you want to delete this build?')) {
+			axios
+				.delete(page.url.pathname, {
+					data: { id: build.id }
+				})
+				.then(() => {
+					window.location.href = '/';
+				})
+				.catch((error) => {
+					console.error('Error deleting build:', error);
+				});
 		}
+	}
 
+	function like() {
+		axios
+			.patch(page.url.pathname, { id: build.id, vote: !liked })
+			.then(() => {
+				liked = !liked;
+				build.votes! += liked ? 1 : -1;
+			})
+			.catch((error) => {
+				console.error('Error liking build:', error);
+			});
+	}
+
+	onMount(() => {
 		if (editable) {
 			(document.querySelectorAll('[data-modal-open]') || []).forEach((trigger) => {
 				const modal = trigger.getAttribute('data-modal-open')!;
@@ -65,7 +94,28 @@
 </script>
 
 <div class="build">
-	<h1>{build.name}</h1>
+	<div class="columns">
+		 <div class="column">
+			<button onclick={like}>
+				<Icon
+					name="md-thumb_up"
+					color={liked ? 'green' : 'var(--text)'}
+				/> {build.votes}
+			</button>
+		</div>
+		<div class="column" style="text-align: right;">
+			{build.user_name}
+		</div>
+	</div>
+
+	<div class="name center">
+		<!-- <h1 id="name" data-modal-open="rename">{build.name}</h1> -->
+		{#if editable}
+			<h1 id="name" contenteditable bind:innerText={build.name}>{build.name}</h1>
+		{:else}
+			<h1 id="name">{build.name}</h1>
+		{/if}
+	</div>
 
 	<div class="character center">
 		<img
@@ -124,6 +174,10 @@
 			{/each}
 		</div>
 	</div>
+
+	<div style="text-align: right;">
+		Patch: {build.patch}
+	</div>
 </div>
 
 <br />
@@ -133,105 +187,111 @@
 		<button class="button" onclick={reset} disabled={!dirty}>Reset</button>
 		<button class="button" onclick={save} disabled={!dirty}>Save</button>
 	</div>
+	<br />
+	{#if build.id}
+		<div class="center">
+			<button class="button" onclick={del}>Delete</button>
+		</div>
+	{/if}
+
+	<div id="select-character" class="modal">
+		<div class="modal-background" data-modal-close="select-character"></div>
+		<div class="modal-card">
+			<section class="modal-card-body">
+				<div class="columns is-multiline is-centered">
+					{#each Object.keys(characters) as character}
+						<div class="column is-2">
+							<button
+								onclick={() => {
+									build.character = character;
+									build.weapon = characters[character as keyof typeof characters].weapons[0];
+								}}
+								data-modal-close="select-character"
+							>
+								<img src="/imgs/characters/{img_name(character)}" alt={character} title={character} />
+							</button>
+						</div>
+					{/each}
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<div id="select-weapon" class="modal">
+		<div class="modal-background" data-modal-close="select-weapon"></div>
+		<div class="modal-card">
+			<section class="modal-card-body">
+				<div class="columns is-multiline is-centered">
+					{#each characters[build.character as keyof typeof characters].weapons as weapon}
+						<div class="column is-2">
+							<button onclick={() => (build.weapon = weapon)} data-modal-close="select-weapon">
+								<img src="/imgs/weapons/{img_name(weapon)}" alt={weapon} title={weapon} />
+							</button>
+						</div>
+					{/each}
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<div id="select-skill" class="modal">
+		<div class="modal-background" data-modal-close="select-skill"></div>
+		<div class="modal-card">
+			<section class="modal-card-body">
+				<!-- <input placeholder="Search skills..." type="text"> -->
+				<div class="columns is-multiline is-centered">
+					{#each skills as skill}
+						<div class="column is-2">
+							<button onclick={() => (build.skills[ndx] = skill)} data-modal-close="select-skill">
+								<img src="/imgs/skills/{img_name(skill)}" alt={skill} title={skill} />
+							</button>
+						</div>
+					{/each}
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<div id="select-versatility" class="modal">
+		<div class="modal-background" data-modal-close="select-versatility"></div>
+		<div class="modal-card">
+			<section class="modal-card-body">
+				<div class="columns is-multiline is-centered">
+					{#each runes.versatility as rune}
+						<div class="column is-2">
+							<button
+								onclick={() => (build.runes.versatility[ndx] = rune)}
+								data-modal-close="select-versatility"
+							>
+								<img src="/imgs/runes/versatility/{img_name(rune)}" alt={rune} title={rune} />
+							</button>
+						</div>
+					{/each}
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<div id="select-tenacity" class="modal">
+		<div class="modal-background" data-modal-close="select-tenacity"></div>
+		<div class="modal-card">
+			<section class="modal-card-body">
+				<div class="columns is-multiline is-centered">
+					{#each runes.tenacity as rune}
+						<div class="column is-2">
+							<button
+								onclick={() => (build.runes.tenacity[ndx] = rune)}
+								data-modal-close="select-tenacity"
+							>
+								<img src="/imgs/runes/tenacity/{img_name(rune)}" alt={rune} title={rune} />
+							</button>
+						</div>
+					{/each}
+				</div>
+			</section>
+		</div>
+	</div>
 {/if}
-
-<div id="select-character" class="modal">
-	<div class="modal-background" data-modal-close="select-character"></div>
-	<div class="modal-card">
-		<section class="modal-card-body">
-			<div class="columns is-multiline is-centered">
-				{#each Object.keys(characters) as character}
-					<div class="column is-2">
-						<button
-							onclick={() => {
-								build.character = character;
-								build.weapon = characters[character].weapons[0];
-							}}
-							data-modal-close="select-character"
-						>
-							<img src="/imgs/characters/{img_name(character)}" alt={character} title={character} />
-						</button>
-					</div>
-				{/each}
-			</div>
-		</section>
-	</div>
-</div>
-
-<div id="select-weapon" class="modal">
-	<div class="modal-background" data-modal-close="select-weapon"></div>
-	<div class="modal-card">
-		<section class="modal-card-body">
-			<div class="columns is-multiline is-centered">
-				{#each characters[build.character].weapons as weapon}
-					<div class="column is-2">
-						<button onclick={() => (build.weapon = weapon)} data-modal-close="select-weapon">
-							<img src="/imgs/weapons/{img_name(weapon)}" alt={weapon} title={weapon} />
-						</button>
-					</div>
-				{/each}
-			</div>
-		</section>
-	</div>
-</div>
-
-<div id="select-skill" class="modal">
-	<div class="modal-background" data-modal-close="select-skill"></div>
-	<div class="modal-card">
-		<section class="modal-card-body">
-			<!-- <input placeholder="Search skills..." type="text"> -->
-			<div class="columns is-multiline is-centered">
-				{#each skills as skill}
-					<div class="column is-2">
-						<button onclick={() => (build.skills[ndx] = skill)} data-modal-close="select-skill">
-							<img src="/imgs/skills/{img_name(skill)}" alt={skill} title={skill} />
-						</button>
-					</div>
-				{/each}
-			</div>
-		</section>
-	</div>
-</div>
-
-<div id="select-versatility" class="modal">
-	<div class="modal-background" data-modal-close="select-versatility"></div>
-	<div class="modal-card">
-		<section class="modal-card-body">
-			<div class="columns is-multiline is-centered">
-				{#each runes.versatility as rune}
-					<div class="column is-2">
-						<button
-							onclick={() => (build.runes.versatility[ndx] = rune)}
-							data-modal-close="select-versatility"
-						>
-							<img src="/imgs/runes/versatility/{img_name(rune)}" alt={rune} title={rune} />
-						</button>
-					</div>
-				{/each}
-			</div>
-		</section>
-	</div>
-</div>
-
-<div id="select-tenacity" class="modal">
-	<div class="modal-background" data-modal-close="select-tenacity"></div>
-	<div class="modal-card">
-		<section class="modal-card-body">
-			<div class="columns is-multiline is-centered">
-				{#each runes.tenacity as rune}
-					<div class="column is-2">
-						<button
-							onclick={() => (build.runes.tenacity[ndx] = rune)}
-							data-modal-close="select-tenacity"
-						>
-							<img src="/imgs/runes/tenacity/{img_name(rune)}" alt={rune} title={rune} />
-						</button>
-					</div>
-				{/each}
-			</div>
-		</section>
-	</div>
-</div>
 
 <style lang="scss">
 	.build {
@@ -241,8 +301,13 @@
 		padding: 6px;
 	}
 
+	.name {
+		margin-bottom: 1em;
+	}
+
 	h1 {
 		margin-bottom: 0;
+		width: auto;
 	}
 
 	img {

@@ -6,14 +6,18 @@ import { Result } from '$lib';
 import { Database } from '../database';
 import { users, sessions } from '../schema';
 
-export function signin(this: Database, id: string, profile: object): Result<{session_id: string, expires: Date}> {
-    this.db.insert(users).values({
+export function signin(this: Database, id: string, name?: string): Result<{session_id: string, expires: Date}> {
+    let query = this.db.insert(users).values({
         id,
-        profile,
-    }).onConflictDoUpdate({
-        target: users.id,
-        set: { profile }
-    }).run();
+        name: name ?? `user${id}`,
+    });
+    if (name) {
+        query = query.onConflictDoUpdate({
+            target: users.id,
+            set: { name },
+        });
+    }
+    query.run();
 
     let session_id = randomBytes(24).toHex();
     let expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);

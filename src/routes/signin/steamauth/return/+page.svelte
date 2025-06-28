@@ -2,13 +2,13 @@
 	import { onMount } from 'svelte';
 
     const { data } = $props();
-    const { profile } = data;
+    const { user } = data;
 
     onMount(() => {
-        if (profile) {
-            localStorage.setItem('profile', JSON.stringify(profile));
+        if (user) {
+            localStorage.setItem('user', user.name);
         } else {
-            localStorage.removeItem('profile')
+            localStorage.removeItem('user')
         }
         document.location.href = '/';
     })

@@ -23,12 +23,12 @@ export class Database {
     }
   }
 
-  get_user(session_id: string): Result<any> {
+  get_user(session_id: string): Result<{ id: string, name: string }> {
     if (!session_id) {
       return Result.Err(new Error("failed to get user: no session_id"));
     }
 
-    let res = this.db.select({ profile: schema.users.profile })
+    let res = this.db.select({ id: schema.users.id, name: schema.users.name })
       .from(schema.users)
       .innerJoin(schema.sessions, eq(schema.users.id, schema.sessions.user_id))
       .where(eq(schema.sessions.id, session_id))
@@ -38,7 +38,7 @@ export class Database {
       return Result.Err(new Error("failed to get user: invalid session_id"));
     }
 
-    return Result.Ok(res.profile);
+    return Result.Ok(res);
   }
 }
 
