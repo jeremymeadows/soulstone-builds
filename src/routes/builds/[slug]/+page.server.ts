@@ -1,7 +1,7 @@
 import { redirect, type Load } from '@sveltejs/kit';
 
 import { db } from '$lib/server/database';
-import { characters, skills, runes } from '$lib/server/options';
+import { characters, skills, runes, tags } from '$lib/server/options';
 import type { Build } from '$lib';
 
 export const load: Load = async ({ params, cookies }: any) => {
@@ -29,7 +29,8 @@ export const load: Load = async ({ params, cookies }: any) => {
 				versatility: ["", "", ""],
 				tenacity: ["", "", "", ""],
 			},
-			notes: ""
+			notes: "",
+			tags: [],
 		};
 	} else {
 		build = db.get_build(params.slug).expect();
@@ -38,5 +39,5 @@ export const load: Load = async ({ params, cookies }: any) => {
 		}
 	}
 
-	return { build, editable: user.ok ? user.value.id === build.user_id : false, liked, characters, skills, runes };
+	return { build, editable: user.ok ? user.value.id === build.user_id : false, liked, characters, skills, runes, tags };
 };

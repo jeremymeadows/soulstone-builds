@@ -7,7 +7,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 
 	const { data } = $props();
-	const { editable, characters, skills, runes } = data;
+	const { editable, characters, skills, runes, tags } = data;
 
 	let saved_build = data.build;
 	let build = $state(data.build);
@@ -18,6 +18,15 @@
 
 	function reset() {
 		build = saved_build;
+	}
+
+	function toggleTag(tag: string) {
+		build.tags ??= []; 
+		if (build.tags.includes(tag)) {
+			build.tags = build.tags.filter((t) => t !== tag);
+		} else {
+			build.tags = [...build.tags, tag];
+		}
 	}
 
 	function save() {
@@ -178,6 +187,26 @@
 	<div style="text-align: right;">
 		Patch: {build.patch}
 	</div>
+
+	{#if editable}
+		<div class="field">
+			<!-- svelte-ignore a11y_label_has_associated_control -->
+			<label class="label">Tags</label>
+			<div class="tags are-medium">
+				{#each tags as tag}
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<span
+						role="button"
+						tabindex="0"
+						class="tag {(build.tags ?? []).includes(tag) ? 'is-selected' : ''}"
+						onclick={() => toggleTag(tag)}
+					>
+						{tag}
+					</span>
+				{/each}
+			</div>
+		</div>
+	{/if}
 </div>
 
 <br />
@@ -345,6 +374,15 @@
 	}
 	.runes .tenacity .icon {
 		transform: translateY(0.4em);
+	}
+
+	label {
+		color: white;
+	}
+
+	.tag.is-selected {
+		background-color: var(--primary);
+		color: black;
 	}
 
 	.stack {
