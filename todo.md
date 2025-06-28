@@ -1,8 +1,7 @@
 # todo list
 
 ## before live deployment
-- search/sort/filter builds
-- show own builds
+- show owned builds
 
 ## before 1.0
 - use view to query data (drizzle studio seems to crash with views)

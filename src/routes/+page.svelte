@@ -1,10 +1,34 @@
 <script lang="ts">
-    import { score, sort_by, img_name } from "$lib";
+    import { type Build, score, sort_by, img_name, PATCHES } from "$lib";
 
 	const { data } = $props();
-    const { builds } = data;
+    const { builds, characters } = data;
 
-    sort_by(builds, score);
+    let display = $state(builds);
+    let sort = $state("score");
+    let filter = $state("any");
+    let search = $state("");
+    let current = $state(true);
+
+    $effect(() => {
+        display = builds.filter((build: Build) => {
+            if (filter === "any") return true;
+            return build.character === filter && 
+                    (search === "" || build.name.toLowerCase().includes(search.toLowerCase())) &&
+                    (current ? build.patch === PATCHES[-1] : true);
+        }).sort((a: any, b: any) => {
+            if (sort === "score") {
+                return score(b) - score(a);
+            } else if (sort === "votes") {
+                return b.votes - a.votes;
+            } else if (sort === "timestamp") {
+                return b.timestamp - a.timestamp;
+            } else if (sort === "name") {
+                return a.name.localeCompare(b.name);
+            }
+            return 0;
+        });
+    });
 </script>
 
 <h1>Soulstone Builds<aside style="font-size: 1rem">*still in beta</aside></h1>
@@ -14,10 +38,34 @@
     <a class="button" href="/builds/+">Create Build</a>
 </div>
 
-<p>| sort | search | only newest patch | character</p>
+<br />
+
+<div class="columns">
+    <div class="column">
+        <select bind:value={sort}>
+            <option value="score">Trending</option>
+            <option value="votes">Highest Voted</option>
+            <option value="timestamp">Newest</option>
+            <option value="name">Name</option>
+        </select>
+    </div>
+    <div class="column">
+        <input type="text" placeholder="Search builds..." bind:value={search} />
+    </div>
+    <div class="column">
+        <input type="checkbox" checked style="transform: scale(1.5)" />&ensp;Only current patch
+    </div>
+    <div class="column">
+        <select bind:value={filter}>
+            {#each Object.keys(characters) as character}
+                <option value="{character}">{character}</option>
+            {/each}
+        </select>
+    </div>
+</div>
 
 <div id="featured">
-    {#each builds as build}
+    {#each display as build}
         <div class="build">
             <a href="/builds/{build.id}">
                 <h3>{build.name}<span style="color: var(--fg)">{build.user_name}</span></h3>
