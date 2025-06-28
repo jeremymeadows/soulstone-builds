@@ -32,13 +32,13 @@ export function get_build(this: Database, id: string): Result<Build> {
         .from(schema.votes)
         .where(eq(schema.votes.build_id, id))
         .groupBy(schema.votes.build_id)
-        .get()!.count;
+        .get();
     let user = this.db.select({ name: schema.users.name })
         .from(schema.users)
         .where(eq(schema.users.id, build.user_id))
-        .get()!.name;
+        .get();
 
-    return Result.Ok({...build, user_name: user, votes});
+    return Result.Ok({ ...build, user_name: user!.name, votes: votes?.count ?? 0 });
 }
 
 export function save_build(this: Database, data: Build): Result<string> {
@@ -50,6 +50,7 @@ export function save_build(this: Database, data: Build): Result<string> {
 }
 
 export function delete_build(this: Database, id: string): Result<null> {
+    this.db.delete(schema.votes).where(eq(schema.votes.build_id, id)).run();
     this.db.delete(schema.builds).where(eq(schema.builds.id, id)).run();
     return Result.Ok(null);
 }

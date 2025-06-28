@@ -13,7 +13,7 @@
 	let build = $state(data.build);
 	let liked = $state(data.liked);
 
-	let dirty = $derived(JSON.stringify(saved_build) !== JSON.stringify(build));
+	let dirty = $derived(JSON.stringify({ ...saved_build, votes: null }) !== JSON.stringify({ ...build, votes: null }));
 	let ndx = 0;
 
 	function reset() {
