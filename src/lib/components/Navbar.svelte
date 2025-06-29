@@ -26,7 +26,7 @@
     if (authenticated) {
       pages = {
         "Create Build": "/builds/+",
-        "My Builds": "/builds",
+        // "My Builds": "/builds",
         "Sign Out": "/signout",
       }
     }

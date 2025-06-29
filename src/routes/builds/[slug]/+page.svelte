@@ -3,17 +3,21 @@
 	import { onMount } from 'svelte';
 
 	import { page } from '$app/state';
-	import { img_name } from '$lib';
 	import Icon from '$lib/components/Icon.svelte';
+	import { load_sync, img_name } from '$lib/assets/images';
 
 	const { data } = $props();
 	const { editable, characters, skills, runes } = data;
+
+	const images = load_sync();
 
 	let saved_build = data.build;
 	let build = $state(data.build);
 	let liked = $state(data.liked);
 
-	let dirty = $derived(JSON.stringify({ ...saved_build, votes: null }) !== JSON.stringify({ ...build, votes: null }));
+	let dirty = $derived(
+		JSON.stringify({ ...saved_build, votes: null }) !== JSON.stringify({ ...build, votes: null })
+	);
 	let ndx = 0;
 
 	function reset() {
@@ -95,12 +99,10 @@
 
 <div class="build">
 	<div class="columns">
-		 <div class="column">
+		<div class="column">
 			<button onclick={like}>
-				<Icon
-					name="md-thumb_up"
-					color={liked ? 'green' : 'var(--text)'}
-				/> {build.votes}
+				<Icon name="md-thumb_up" color={liked ? 'green' : 'var(--text)'} />
+				{build.votes}
 			</button>
 		</div>
 		<div class="column" style="text-align: right;">
@@ -109,7 +111,6 @@
 	</div>
 
 	<div class="name center">
-		<!-- <h1 id="name" data-modal-open="rename">{build.name}</h1> -->
 		{#if editable}
 			<h1 id="name" contenteditable bind:innerText={build.name}>{build.name}</h1>
 		{:else}
@@ -119,27 +120,19 @@
 
 	<div class="character center">
 		<img
-			src="/imgs/characters/{img_name(build.character)}"
+			src={images.characters[img_name(build.character)]}
 			alt={build.character}
 			title={build.character}
 			data-modal-open="select-character"
 		/>
-		<img
-			src="/imgs/weapons/{img_name(build.weapon)}"
-			alt={build.weapon}
-			data-modal-open="select-weapon"
-		/>
+		<img src={images.weapons[img_name(build.weapon)]} alt={build.weapon} data-modal-open="select-weapon" />
 	</div>
 
 	<div class="skills columns center">
 		{#each build.skills as skill, i}
 			<div class="column">
 				<button onclick={() => (ndx = i)}>
-					<img
-						src="/imgs/skills/{img_name(skill)}"
-						alt={skill}
-						data-modal-open="select-skill"
-					/>
+					<img src={images.skills[img_name(skill)]} alt={skill} data-modal-open="select-skill" />
 				</button>
 			</div>
 		{/each}
@@ -150,8 +143,10 @@
 			{#each build.runes.versatility as rune, i}
 				<button onclick={() => (ndx = i)} data-modal-open="select-versatility">
 					<span class="stack">
-						<img src="/imgs/runes/RuneBuildFrame.png" alt="" class="frame" />
-						<img src="/imgs/runes/versatility/{img_name(rune)}" alt={rune} class="icon" />
+						<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
+						{#if rune !== "_empty"}
+							<img src={images.runes[img_name(rune)]} alt={rune} class="icon" />
+						{/if}
 					</span>
 				</button>
 			{/each}
@@ -160,14 +155,9 @@
 			{#each build.runes.tenacity as rune, i}
 				<button onclick={() => (ndx = i)} data-modal-open="select-tenacity">
 					<div class="stack">
-						<img src="/imgs/runes/RuneBuildFrame.png" alt="" class="frame" />
-						{#if rune}
-							<img
-								src="/imgs/runes/tenacity/{img_name(rune)}"
-								alt={rune}
-								class="icon"
-								hidden={true}
-							/>
+						<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
+						{#if rune !== "_empty"}
+							<img src={images.runes[img_name(rune)]} alt={rune} class="icon" />
 						{/if}
 					</div>
 				</button>
@@ -208,7 +198,7 @@
 								}}
 								data-modal-close="select-character"
 							>
-								<img src="/imgs/characters/{img_name(character)}" alt={character} title={character} />
+								<img src={images.characters[img_name(character)]} alt={character} title={character} />
 							</button>
 						</div>
 					{/each}
@@ -225,7 +215,7 @@
 					{#each characters[build.character as keyof typeof characters].weapons as weapon}
 						<div class="column is-2">
 							<button onclick={() => (build.weapon = weapon)} data-modal-close="select-weapon">
-								<img src="/imgs/weapons/{img_name(weapon)}" alt={weapon} title={weapon} />
+								<img src={images.weapons[img_name(weapon)]} alt={weapon.replace(/^_/, "")} title={weapon} />
 							</button>
 						</div>
 					{/each}
@@ -243,7 +233,7 @@
 					{#each skills as skill}
 						<div class="column is-2">
 							<button onclick={() => (build.skills[ndx] = skill)} data-modal-close="select-skill">
-								<img src="/imgs/skills/{img_name(skill)}" alt={skill} title={skill} />
+								<img src={images.skills[img_name(skill)]} alt={skill} title={skill} />
 							</button>
 						</div>
 					{/each}
@@ -263,7 +253,7 @@
 								onclick={() => (build.runes.versatility[ndx] = rune)}
 								data-modal-close="select-versatility"
 							>
-								<img src="/imgs/runes/versatility/{img_name(rune)}" alt={rune} title={rune} />
+								<img src={images.runes[img_name(rune)]} alt={rune} title={rune} />
 							</button>
 						</div>
 					{/each}
@@ -283,7 +273,7 @@
 								onclick={() => (build.runes.tenacity[ndx] = rune)}
 								data-modal-close="select-tenacity"
 							>
-								<img src="/imgs/runes/tenacity/{img_name(rune)}" alt={rune} title={rune} />
+								<img src={images.runes[img_name(rune)]} alt={rune} title={rune} />
 							</button>
 						</div>
 					{/each}

@@ -1,6 +1,6 @@
 {
-  "any": {
-    "weapons": [ "any" ]
+  "_any": {
+    "weapons": [ "_any" ]
   },
   "Barbarian": {
     "weapons": [

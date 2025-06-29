@@ -18,7 +18,7 @@ export function get_builds(this: Database): Result<Build[]> {
     return Result.Ok(builds.map((build) => {
         let vote = votes.find(v => v.build_id === build.id);
         let user = usernames.find(u => u.id === build.user_id);
-        return { ...build, user_name: (user?.name ?? `user${build.user_id}`), votes: (vote?.count ?? 0) };
+        return { ...build, user_name: user!.name, votes: vote?.count ?? 0 };
     }));
 }
 

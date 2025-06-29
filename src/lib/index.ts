@@ -31,10 +31,6 @@ export function score(build: Build): number {
     return (build.votes! - 1) / ((build_age + 2) ** GRAVITY) * patch_weight;
 }
 
-export function img_name(name?: string): string {
-    return (name ?? "default").replace(/[^A-Za-z0-9_]/g, "") + ".png";
-}
-
 export function sort_by<T>(objects: T[], lambda: (val: any) => number | string): T[] {
     return objects.sort((a: any, b: any) => {
         a = lambda(a);

@@ -22,12 +22,12 @@ export const load: Load = async ({ params, cookies }: any) => {
 			user_id: user.value.id,
 			timestamp: new Date(),
 			patch: "1.0g",
-			character: "any",
-			weapon: "any",
-			skills: ["_", "_", "_", "_", "_", "_"],
+			character: "_any",
+			weapon: "_any",
+			skills: Array(6).fill("_none"),
 			runes: {
-				versatility: ["", "", ""],
-				tenacity: ["", "", "", ""],
+				versatility: Array(3).fill("_empty"),
+				tenacity: Array(4).fill("_empty"),
 			},
 			notes: ""
 		};
