@@ -29,7 +29,7 @@
 			.post(page.url.pathname, build)
 			.then((res) => {
 				if (!build.id) {
-					window.location.href = `/builds/${res.data}`;
+					window.location.href = `/builds/id/${res.data}`;
 				}
 				saved_build = $state.snapshot(build);
 				dirty = false;
@@ -99,15 +99,17 @@
 
 <div class="build">
 	<div class="columns">
-		<div class="column">
-			<button onclick={like}>
-				<Icon name="md-thumb_up" color={liked ? 'green' : 'var(--text)'} />
-				{build.votes}
-			</button>
-		</div>
-		<div class="column" style="text-align: right;">
-			{build.user_name}
-		</div>
+		{#if build.id}
+			<div class="column">
+				<button onclick={like}>
+					<Icon name="md-thumb_up" color={liked ? 'green' : 'var(--text)'} />
+					{build.votes}
+				</button>
+			</div>
+			<div class="column" style="text-align: right;">
+				{build.user_name}
+			</div>
+		{/if}
 	</div>
 
 	<div class="name center">
@@ -125,7 +127,11 @@
 			title={build.character}
 			data-modal-open="select-character"
 		/>
-		<img src={images.weapons[img_name(build.weapon)]} alt={build.weapon} data-modal-open="select-weapon" />
+		<img
+			src={images.weapons[img_name(build.weapon)]}
+			alt={build.weapon}
+			data-modal-open="select-weapon"
+		/>
 	</div>
 
 	<div class="skills columns center">
@@ -144,7 +150,7 @@
 				<button onclick={() => (ndx = i)} data-modal-open="select-versatility">
 					<span class="stack">
 						<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
-						{#if rune !== "_empty"}
+						{#if rune !== '_empty'}
 							<img src={images.runes[img_name(rune)]} alt={rune} class="icon" />
 						{/if}
 					</span>
@@ -156,7 +162,7 @@
 				<button onclick={() => (ndx = i)} data-modal-open="select-tenacity">
 					<div class="stack">
 						<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
-						{#if rune !== "_empty"}
+						{#if rune !== '_empty'}
 							<img src={images.runes[img_name(rune)]} alt={rune} class="icon" />
 						{/if}
 					</div>
@@ -198,7 +204,11 @@
 								}}
 								data-modal-close="select-character"
 							>
-								<img src={images.characters[img_name(character)]} alt={character} title={character} />
+								<img
+									src={images.characters[img_name(character)]}
+									alt={character}
+									title={character}
+								/>
 							</button>
 						</div>
 					{/each}
@@ -215,7 +225,11 @@
 					{#each characters[build.character as keyof typeof characters].weapons as weapon}
 						<div class="column is-2">
 							<button onclick={() => (build.weapon = weapon)} data-modal-close="select-weapon">
-								<img src={images.weapons[img_name(weapon)]} alt={weapon.replace(/^_/, "")} title={weapon} />
+								<img
+									src={images.weapons[img_name(weapon)]}
+									alt={weapon.replace(/^_/, '')}
+									title={weapon}
+								/>
 							</button>
 						</div>
 					{/each}

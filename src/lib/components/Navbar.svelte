@@ -25,7 +25,7 @@
     authenticated = localStorage.getItem("user") !== null;
     if (authenticated) {
       pages = {
-        "Create Build": "/builds/+",
+        "Create Build": "/builds/new",
         // "My Builds": "/builds",
         "Sign Out": "/signout",
       }

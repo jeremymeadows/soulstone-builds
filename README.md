@@ -25,4 +25,4 @@ STEAM_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 ## Contributing
 
-Items I'm currently working on are in [todo.md](todo.md).
+Pull requests are welcome! If you're wanting to contribute, check out what [issues](https://github.com/jeremymeadows/soulstone-builds/issues) have been logged.

@@ -1,16 +1,15 @@
-import { randomBytes } from 'crypto';
 import { error, json } from '@sveltejs/kit';
 import { db } from '$lib/server/database';
 
 export const POST = async ({ request, cookies }: any) => {
     const session_id = cookies.get('session');
     const user = db.get_user(session_id);
+
     if (!user.ok) {
         return error(401, "cannot save build: not logged in");
     }
 
     let build = await request.json();
-    build.id ||= randomBytes(16).toHex();
     build.timestamp = new Date(build.timestamp);
 
     if (user.value.id !== build.user_id) {
@@ -30,6 +29,7 @@ export const POST = async ({ request, cookies }: any) => {
 export const DELETE = async ({ request, cookies }: any) => {
     const session_id = cookies.get('session');
     const user = db.get_user(session_id);
+
     if (!user.ok) {
         return error(401, "cannot delete build: not logged in");
     }
@@ -48,6 +48,7 @@ export const DELETE = async ({ request, cookies }: any) => {
 export const PATCH = async ({ request, cookies }: any) => {
     const session_id = cookies.get('session');
     const user = db.get_user(session_id);
+
     if (!user.ok) {
         return error(401, "cannot vote on build: not logged in");
     }
