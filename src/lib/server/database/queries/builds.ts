@@ -18,28 +18,41 @@ export function get_builds(this: Database): Result<Build[]> {
     return Result.Ok(builds.map((build) => {
         let vote = votes.find(v => v.build_id === build.id);
         let user = usernames.find(u => u.id === build.user_id);
-        return { ...build, user_name: (user?.name ?? `user${build.user_id}`), votes: (vote?.count ?? 0) };
+        return { ...build, user_name: (user?.name ?? `user${build.user_id}`), votes: (vote?.count ?? 0), tags: Array.isArray(build.tags) ? build.tags as string[] : [] };
     }));
 }
 
 export function get_build(this: Database, id: string): Result<Build> {
-    let build = this.db.select().from(schema.builds).where(eq(schema.builds.id, id)).get();
+    const build = this.db
+        .select()
+        .from(schema.builds)
+        .where(eq(schema.builds.id, id))
+        .get();
+
     if (!build) {
         return Result.Err(new Error("build not found"));
     }
 
-    let votes = this.db.select({ count: count(schema.votes.user_id) })
+    const vote_result = this.db
+        .select({ count: count(schema.votes.user_id) })
         .from(schema.votes)
         .where(eq(schema.votes.build_id, id))
         .groupBy(schema.votes.build_id)
         .get();
-    let user = this.db.select({ name: schema.users.name })
+
+    const user_result = this.db
+        .select({ name: schema.users.name })
         .from(schema.users)
         .where(eq(schema.users.id, build.user_id))
         .get();
 
-    return Result.Ok({ ...build, user_name: user!.name, votes: votes?.count ?? 0 });
+    const votes = vote_result?.count ?? 0;
+    const user = user_result?.name ?? `user${build.user_id}`;
+    const tags = Array.isArray(build.tags) ? build.tags as string[] : []
+
+    return Result.Ok({ ...build, user_name: user, votes, tags });
 }
+
 
 export function save_build(this: Database, data: Build): Result<string> {
     this.db.insert(schema.builds).values(data).onConflictDoUpdate({
