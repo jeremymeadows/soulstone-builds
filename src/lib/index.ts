@@ -48,3 +48,14 @@ export function sort_by_key<T>(objects: T[], key: string): T[] {
         return 0;
     });
 }
+
+export function select(selector: string): void {
+    let element = document.querySelector(selector);
+    let sel = document.getSelection();
+    if (sel && element) {
+        let range = document.createRange();
+        range.selectNodeContents(element);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+}

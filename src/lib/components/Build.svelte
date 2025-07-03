@@ -4,6 +4,7 @@
 
 	import { page } from '$app/state';
 	import Icon from '$lib/components/Icon.svelte';
+	import { select } from '$lib';
 	import { load_sync, img_name } from '$lib/assets/images';
 
 	const { data } = $props();
@@ -14,6 +15,9 @@
 	let saved_build = data.build;
 	let build = $state(data.build);
 	let liked = $state(data.liked);
+
+	let skill_filter = $state('');
+	let rune_filter = $state('');
 
 	let dirty = $derived(
 		JSON.stringify({ ...saved_build, votes: null }) !== JSON.stringify({ ...build, votes: null })
@@ -114,7 +118,14 @@
 
 	<div class="name center">
 		{#if editable}
-			<h1 id="name" contenteditable bind:innerText={build.name}>{build.name}</h1>
+			<h1>
+				<span id="name" contenteditable bind:innerText={build.name}>
+					{build.name}
+				</span>
+				<button onclick={() => select('#name')}>
+					<Icon name="fa-edit" size="0.5em" translate="0, -0.4em" />
+				</button>
+			</h1>
 		{:else}
 			<h1 id="name">{build.name}</h1>
 		{/if}
@@ -242,10 +253,14 @@
 		<div class="modal-background" data-modal-close="select-skill"></div>
 		<div class="modal-card">
 			<section class="modal-card-body">
-				<!-- <input placeholder="Search skills..." type="text"> -->
+				<input class="input" placeholder="Search skills..." type="text" bind:value={skill_filter} />
+				<br /><br />
 				<div class="columns is-multiline is-centered">
 					{#each skills as skill}
-						<div class="column is-2">
+						<div
+							class="column is-2"
+							style:display={skill.toLowerCase().includes(skill_filter.toLowerCase()) ? 'block' : 'none'}
+						>
 							<button onclick={() => (build.skills[ndx] = skill)} data-modal-close="select-skill">
 								<img src={images.skills[img_name(skill)]} alt={skill} title={skill} />
 							</button>
@@ -280,9 +295,14 @@
 		<div class="modal-background" data-modal-close="select-tenacity"></div>
 		<div class="modal-card">
 			<section class="modal-card-body">
+				<input class="input" placeholder="Search runes..." type="text" bind:value={rune_filter} />
+				<br /><br />
 				<div class="columns is-multiline is-centered">
 					{#each runes.tenacity as rune}
-						<div class="column is-2">
+						<div
+							class="column is-2"
+							style:display={rune.toLowerCase().includes(rune_filter.toLowerCase()) ? 'block' : 'none'}
+						>
 							<button
 								onclick={() => (build.runes.tenacity[ndx] = rune)}
 								data-modal-close="select-tenacity"

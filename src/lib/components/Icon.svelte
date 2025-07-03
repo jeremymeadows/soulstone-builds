@@ -5,7 +5,7 @@
         width = size,
         height = "1em",
 		color = 'currentColor',
-		translate = '0 0',
+		translate = '0, 0',
 		rotate = '0deg'
 	} = $props();
 
