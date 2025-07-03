@@ -182,9 +182,18 @@
 		</div>
 	</div>
 
-	<div style="text-align: right;">
+	<div style:text-align="right">
 		Patch: {build.patch}
 	</div>
+
+	{#if editable}
+		<textarea
+			class="input"
+			placeholder="Description"
+			bind:value={build.notes}
+			style="width: 100%; height: 10em; resize: vertical;"
+		></textarea>
+	{/if}
 </div>
 
 <br />
