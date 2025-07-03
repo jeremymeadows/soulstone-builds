@@ -85,33 +85,29 @@
 
 							<div class="skills column center">
 								{#each build.skills as skill}
-									<button><img src={images.skills[img_name(skill)]} alt={skill} /></button>
+									<img src={images.skills[img_name(skill)]} alt={skill} />
 								{/each}
 							</div>
 
 							<div class="runes column is-4">
 								<div class="versatility center">
 									{#each build.runes.versatility as rune}
-										<button>
 											<span class="stack">
 												<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
 												{#if rune !== '_empty'}
 													<img src={images.runes[img_name(rune)]} alt="" class="icon" />
 												{/if}
 											</span>
-										</button>
 									{/each}
 								</div>
 								<div class="tenacity center">
 									{#each build.runes.tenacity as rune}
-										<button>
 											<div class="stack">
 												<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
 												{#if rune !== '_empty'}
 													<img src={images.runes[img_name(rune)]} alt="" class="icon" />
 												{/if}
 											</div>
-										</button>
 									{/each}
 								</div>
 							</div>
@@ -170,6 +166,10 @@
 		margin-bottom: -5em;
 		transform: translateY(-0.5em);
 
+		.stack {
+			clip-path: polygon(50% 100%, 100% 62%, 82% 0, 18% 0, 0 62%);
+		}
+
 		.icon {
 			transform: translateY(-0.4em);
 		}
@@ -177,6 +177,10 @@
 
 	.runes .tenacity {
 		transform: translateY(2.4em);
+
+		.stack {
+			clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+		}
 
 		.frame {
 			transform: scaleY(-1);

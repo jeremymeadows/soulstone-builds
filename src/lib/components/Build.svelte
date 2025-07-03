@@ -193,6 +193,8 @@
 			bind:value={build.notes}
 			style="width: 100%; height: 10em; resize: vertical;"
 		></textarea>
+	{:else if build.notes}
+		<p>{build.notes}</p>
 	{/if}
 </div>
 
@@ -367,17 +369,28 @@
 
 	.runes .versatility {
 		margin-bottom: -5em;
+
+		button {
+			clip-path: polygon(50% 100%, 100% 62%, 82% 0, 18% 0, 0 62%)
+		}
+
+		.icon {
+			transform: translateY(-0.8em);
+		}
 	}
 
-	.runes .versatility .icon {
-		transform: translateY(-0.8em);
-	}
+	.runes .tenacity {
+		button {
+			clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+		}
+	
+		.frame {
+			transform: scaleY(-1);
+		}
 
-	.runes .tenacity .frame {
-		transform: scaleY(-1);
-	}
-	.runes .tenacity .icon {
-		transform: translateY(0.4em);
+		.icon {
+			transform: translateY(0.4em);
+		}
 	}
 
 	.stack {
