@@ -1,33 +1,41 @@
 <script lang="ts">
-  import Navbar from "$lib/components/Navbar.svelte";
-  import Footer from "$lib/components/Footer.svelte";
+	import Navbar from '$lib/components/Navbar.svelte';
+	import Tooltips from '$lib/components/Tooltips.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 
-  import '/src/global.scss';
+	import '/src/global.scss';
 
-  const { children } = $props();
+	const { children } = $props();
+
+	let height: number = $state(0);
+	let headheight = $state(0);
+	let footheight = $state(0);
 </script>
 
 <svelte:head>
-  <title>Soulstone Builds</title>
+	<title>Soulstone Builds</title>
 
-  <meta name="author" content="Jeremy Meadows" />
-  <meta name="description" content="Create, share, and discover builds for Soulstone Survivors." />
-  <meta name="url" content="soulstonebuilds.jeremymeadows.dev" />
-  <meta name="keywords" content="Soulstone, Survivors, Builds" />
+	<meta name="author" content="Jeremy Meadows" />
+	<meta name="description" content="Create, share, and discover builds for Soulstone Survivors." />
+	<meta name="url" content="soulstonebuilds.jeremymeadows.dev" />
+	<meta name="keywords" content="Soulstone Survivors, Builds" />
 </svelte:head>
 
-<Navbar />
+<svelte:window bind:innerHeight={height} />
 
-<main>
-  {@render children()}
+<Navbar bind:height={headheight} />
+
+<Tooltips />
+
+<main style:margin-top={headheight + 'px'} style:min-height={height - headheight - footheight + 'px'}>
+	{@render children()}
 </main>
 
-<!-- <Footer /> -->
+<Footer bind:height={footheight} />
 
 <style lang="scss">
-  main {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-    min-height: calc(100vh - 4rem + 3px);
-  }
+	main {
+		padding-top: 2rem;
+		padding-bottom: 6rem;
+	}
 </style>

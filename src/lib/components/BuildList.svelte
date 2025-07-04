@@ -78,21 +78,21 @@
 								<img
 									src={images.characters[img_name(build.character)]}
 									alt={build.character}
-									title={build.character}
+									data-tooltip={build.character}
 								/>
-								<img src={images.weapons[img_name(build.weapon)]} alt={build.weapon} />
+								<img src={images.weapons[img_name(build.weapon)]} alt={build.weapon} data-tooltip={build.weapon} />
 							</div>
 
 							<div class="skills column center">
 								{#each build.skills as skill}
-									<img src={images.skills[img_name(skill)]} alt={skill} />
+									<img src={images.skills[img_name(skill)]} alt={skill} data-tooltip={skill} />
 								{/each}
 							</div>
 
 							<div class="runes column is-4">
 								<div class="versatility center">
 									{#each build.runes.versatility as rune}
-											<span class="stack">
+											<span class="stack" data-tooltip={rune}>
 												<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
 												{#if rune !== '_empty'}
 													<img src={images.runes[img_name(rune)]} alt="" class="icon" />
@@ -102,7 +102,7 @@
 								</div>
 								<div class="tenacity center">
 									{#each build.runes.tenacity as rune}
-											<div class="stack">
+											<div class="stack" data-tooltip={rune}>
 												<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
 												{#if rune !== '_empty'}
 													<img src={images.runes[img_name(rune)]} alt="" class="icon" />

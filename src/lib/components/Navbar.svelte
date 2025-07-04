@@ -2,7 +2,10 @@
 	import { onMount } from 'svelte';
 	import { navigating } from '$app/state';
 
+	let { height = $bindable() } = $props();
+
 	const title = 'Soulstone Builds';
+
 	let pages: object = $state({
 		'Sign In': '/signin'
 	});
@@ -41,7 +44,7 @@
 	});
 </script>
 
-<nav class="navbar is-fixed-top has-shadow" aria-label="main navigation">
+<nav class="navbar is-fixed-top has-shadow" aria-label="main navigation" bind:clientHeight={height}>
 	<div class="navbar-brand">
 		<a href="/" class="navbar-item">{title}</a>
 		{#if !true}

@@ -135,12 +135,13 @@
 		<img
 			src={images.characters[img_name(build.character)]}
 			alt={build.character}
-			title={build.character}
+			data-tooltip={build.character}
 			data-modal-open="select-character"
 		/>
 		<img
 			src={images.weapons[img_name(build.weapon)]}
 			alt={build.weapon}
+			data-tooltip={build.weapon}
 			data-modal-open="select-weapon"
 		/>
 	</div>
@@ -148,8 +149,8 @@
 	<div class="skills columns center">
 		{#each build.skills as skill, i}
 			<div class="column">
-				<button onclick={() => (ndx = i)}>
-					<img src={images.skills[img_name(skill)]} alt={skill} data-modal-open="select-skill" />
+				<button onclick={() => (ndx = i)} data-modal-open="select-skill">
+					<img src={images.skills[img_name(skill)]} alt={skill} data-tooltip={skill} />
 				</button>
 			</div>
 		{/each}
@@ -158,7 +159,7 @@
 	<div class="runes">
 		<div class="versatility center">
 			{#each build.runes.versatility as rune, i}
-				<button onclick={() => (ndx = i)} data-modal-open="select-versatility">
+				<button onclick={() => (ndx = i)} data-tooltip={rune} data-modal-open="select-versatility">
 					<span class="stack">
 						<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
 						{#if rune !== '_empty'}
@@ -170,7 +171,7 @@
 		</div>
 		<div class="tenacity center">
 			{#each build.runes.tenacity as rune, i}
-				<button onclick={() => (ndx = i)} data-modal-open="select-tenacity">
+				<button onclick={() => (ndx = i)} data-tooltip={rune} data-modal-open="select-tenacity">
 					<div class="stack">
 						<img src={images.runes['RuneBuildFrame']} alt="" class="frame" />
 						{#if rune !== '_empty'}
@@ -229,7 +230,7 @@
 								<img
 									src={images.characters[img_name(character)]}
 									alt={character}
-									title={character}
+									data-tooltip={character}
 								/>
 							</button>
 						</div>
@@ -250,7 +251,7 @@
 								<img
 									src={images.weapons[img_name(weapon)]}
 									alt={weapon.replace(/^_/, '')}
-									title={weapon}
+									data-tooltip={weapon}
 								/>
 							</button>
 						</div>
@@ -273,7 +274,7 @@
 							style:display={skill.toLowerCase().includes(skill_filter.toLowerCase()) ? 'block' : 'none'}
 						>
 							<button onclick={() => (build.skills[ndx] = skill)} data-modal-close="select-skill">
-								<img src={images.skills[img_name(skill)]} alt={skill} title={skill} />
+								<img src={images.skills[img_name(skill)]} alt={skill} data-tooltip={skill} />
 							</button>
 						</div>
 					{/each}
@@ -293,7 +294,7 @@
 								onclick={() => (build.runes.versatility[ndx] = rune)}
 								data-modal-close="select-versatility"
 							>
-								<img src={images.runes[img_name(rune)]} alt={rune} title={rune} />
+								<img src={images.runes[img_name(rune)]} alt={rune} data-tooltip={rune} />
 							</button>
 						</div>
 					{/each}
@@ -318,7 +319,7 @@
 								onclick={() => (build.runes.tenacity[ndx] = rune)}
 								data-modal-close="select-tenacity"
 							>
-								<img src={images.runes[img_name(rune)]} alt={rune} title={rune} />
+								<img src={images.runes[img_name(rune)]} alt={rune} data-tooltip={rune} />
 							</button>
 						</div>
 					{/each}

@@ -1,16 +1,26 @@
 <script lang="ts">
+	let { height = $bindable() } = $props();
 </script>
 
-<p class="center">
-  &copy;{new Date().getFullYear()} <a href="https://jeremymeadows.dev">Jeremy Meadows</a>
-</p>
+<div bind:clientHeight={height}>
+	<div style:text-align="center">
+		<a href="https://github.com/jeremymeadows/soulstone-builds">
+			<img
+				src="https://img.shields.io/badge/jeremymeadows/soulstone--builds-202020?logo=github"
+				alt="github link"
+			/>
+		</a>
+	</div>
+</div>
 
 <style lang="scss">
-  p {
-    font-size: 10px;
-    padding-bottom: 3rem;
-  }
-  a {
-    color: var(--fg);
-  }
+	div {
+		padding-bottom: 0.1rem;
+	}
+	a {
+		color: var(--fg);
+	}
+	img {
+		height: 1em;
+	}
 </style>

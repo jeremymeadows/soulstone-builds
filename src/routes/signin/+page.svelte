@@ -1,15 +1,14 @@
 <script>
-    import Icon from '$lib/components/Icon.svelte';
 </script>
 
-<button class="button center">
+<button class="center">
     <a href="/signin/steamauth">
-        <Icon name="fa-steam" size="1.5em"/>&emsp;Sign in with Steam
+        <img src="/steam_signin.png" alt="Steam Logo" />
     </a>
 </button>
 
 <style lang="scss">
     button {
-        font-size: 1.5em;
+        margin-top: 6rem;
     }
 </style>
