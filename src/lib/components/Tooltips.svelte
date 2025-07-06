@@ -59,7 +59,6 @@
 		position: absolute;
 		background-color: var(--bg);
 		padding: 0 0.5em;
-		// background-color: red;
         z-index: 1000;
 	}
 </style>

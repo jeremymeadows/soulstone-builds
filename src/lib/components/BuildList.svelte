@@ -3,12 +3,13 @@
 	import { load, img_name } from '$lib/assets/images';
 
 	const { data } = $props();
-	const { builds, characters } = data;
+	const { builds, characters, tags } = data;
 
 	let sort = $state('score');
 
 	let filter = $state('_any');
 	let search = $state('');
+	let tagged = $state([]);
 	let current = $state(true);
 
 	let display = $derived(
@@ -17,6 +18,7 @@
 				return (
 					(filter === '_any' || build.character === filter) &&
 					(current ? build.patch === PATCHES[PATCHES.length - 1] : true) &&
+					(tagged.every((tag: string) => build.tags.includes(tag))) &&
 					(!search ||
 						build.name.toLowerCase().includes(search.toLowerCase()) ||
 						build.user_name?.toLowerCase().includes(search.toLowerCase()))
@@ -50,6 +52,13 @@
 		</div>
 		<div class="column">
 			<input type="text" placeholder="Search builds..." bind:value={search} />
+		</div>
+		<div class="column">
+			<select multiple bind:value={tagged}>
+				{#each tags as tag}
+					<option value={tag}>{tag}</option>
+				{/each}
+			</select>
 		</div>
 		<div class="column">
 			<input type="checkbox" checked style="transform: scale(1.5)" />&ensp;Only current patch
@@ -113,13 +122,13 @@
 							</div>
 						</div>
 						<div class="votes columns">
-							<span class="column">Votes: {build.votes}</span>
+							<span class="column is-2">Votes: {build.votes}</span>
 							<span class="column tags">
 								{#each build.tags as tag}
 									<span class="tag">{tag}</span>
 								{/each}
 							</span>
-							<span class="right column">Patch: {build.patch}</span>
+							<span class="right column is-2">Patch: {build.patch}</span>
 						</div>
 					</a>
 				</div>
@@ -220,14 +229,14 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
+		margin-top: -0.2rem;
 		margin-bottom: 0;
 
         .tag {
             background-color: var(--primary);
-            color: rgb(0, 0, 0);
-            padding: 0.3em 0.6em;
+            color: black;
             border-radius: 0.3em;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
     }
 </style>

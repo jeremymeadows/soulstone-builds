@@ -191,8 +191,19 @@
 		</div>
 	</div>
 
-	<div style:text-align="right">
-		Patch: {build.patch}
+	<h3 class="center">Tags</h3>
+
+	<div class="tags center are-medium">
+		{#each editable ? tags : tags.filter((tag: string) => build.tags.includes(tag)) as tag}
+			<button
+				class="button tag"
+				class:is-selected={build.tags.includes(tag)}
+				onclick={editable ? () => toggleTag(tag) : null}
+				disabled={!editable}
+			>
+				{tag}
+			</button>
+		{/each}
 	</div>
 
 	{#if editable}
@@ -202,34 +213,13 @@
 			bind:value={build.notes}
 			style="width: 100%; height: 10em; resize: vertical;"
 		></textarea>
-
-		<h3 class="center">Tags</h3>
-
-		<div class="tags are-medium">
-			{#each tags as tag}
-				<button
-					tabindex="0"
-					class="tag {(build.tags ?? []).includes(tag) ? 'is-selected' : ''}"
-					onclick={() => toggleTag(tag)}
-				>
-					{tag}
-				</button>
-			{/each}
-		</div>
-	{:else}
-		{#if build.notes}
-			<p>{build.notes}</p>
-		{/if}
-		<h3 class="center">Tags</h3>
-
-		<div class="tags are-medium">
-			{#each tags as tag}
-				<span class="tag {(build.tags ?? []).includes(tag) ? 'is-selected' : ''}" >
-					{tag}
-				</span>
-			{/each}
-		</div>
+	{:else if build.notes}
+		<p>{build.notes}</p>
 	{/if}
+
+	<div style:text-align="right">
+		Patch: {build.patch}
+	</div>
 </div>
 
 <br />
@@ -405,7 +395,7 @@
 		margin-bottom: -5em;
 
 		button {
-			clip-path: polygon(50% 100%, 100% 62%, 82% 0, 18% 0, 0 62%)
+			clip-path: polygon(50% 100%, 100% 62%, 82% 0, 18% 0, 0 62%);
 		}
 
 		.icon {
@@ -417,7 +407,7 @@
 		button {
 			clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
 		}
-	
+
 		.frame {
 			transform: scaleY(-1);
 		}
@@ -425,6 +415,13 @@
 		.icon {
 			transform: translateY(0.4em);
 		}
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem;
 	}
 
 	.tag.is-selected {
