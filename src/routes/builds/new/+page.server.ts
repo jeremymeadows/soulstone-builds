@@ -1,7 +1,7 @@
 import { redirect, type Load } from '@sveltejs/kit';
 
 import { db } from '$lib/server/database';
-import { characters, skills, runes } from '$lib/server/options';
+import { characters, skills, runes, tags } from '$lib/server/options';
 import type { Build } from '$lib';
 
 export const load: Load = async ({ cookies }: any) => {
@@ -25,8 +25,9 @@ export const load: Load = async ({ cookies }: any) => {
 			versatility: Array(3).fill("_empty"),
 			tenacity: Array(4).fill("_empty"),
 		},
-		notes: ""
+		notes: "",
+		tags: [],
 	};
 
-	return { build, editable: true, characters, skills, runes };
+	return { build, editable: true, characters, skills, runes, tags };
 };

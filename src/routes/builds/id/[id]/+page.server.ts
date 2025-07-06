@@ -1,7 +1,7 @@
-import { redirect, type Load } from '@sveltejs/kit';
+import { type Load } from '@sveltejs/kit';
 
 import { db } from '$lib/server/database';
-import { characters, skills, runes } from '$lib/server/options';
+import { characters, skills, runes, tags } from '$lib/server/options';
 import type { Build } from '$lib';
 
 export const load: Load = async ({ params, cookies }: any) => {
@@ -17,5 +17,6 @@ export const load: Load = async ({ params, cookies }: any) => {
 		characters,
 		skills,
 		runes,
+		tags,
 	};
 };

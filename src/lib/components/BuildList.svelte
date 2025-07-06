@@ -114,7 +114,11 @@
 						</div>
 						<div class="votes columns">
 							<span class="column">Votes: {build.votes}</span>
-							<span class="column"></span>
+							<span class="column tags">
+								{#each build.tags as tag}
+									<span class="tag">{tag}</span>
+								{/each}
+							</span>
 							<span class="right column">Patch: {build.patch}</span>
 						</div>
 					</a>
@@ -211,4 +215,19 @@
 	.right {
 		text-align: right;
 	}
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+		margin-bottom: 0;
+
+        .tag {
+            background-color: var(--primary);
+            color: rgb(0, 0, 0);
+            padding: 0.3em 0.6em;
+            border-radius: 0.3em;
+            font-size: 0.9rem;
+        }
+    }
 </style>

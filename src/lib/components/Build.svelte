@@ -8,7 +8,7 @@
 	import { load_sync, img_name } from '$lib/assets/images';
 
 	const { data } = $props();
-	const { editable, characters, skills, runes } = data;
+	const { editable, characters, skills, runes, tags } = data;
 
 	const images = load_sync();
 
@@ -26,6 +26,14 @@
 
 	function reset() {
 		build = saved_build;
+	}
+
+	function toggleTag(tag: string) {
+		if (build.tags.includes(tag)) {
+			build.tags = build.tags.filter((t: string) => t !== tag);
+		} else {
+			build.tags = [...build.tags, tag];
+		}
 	}
 
 	function save() {
@@ -194,8 +202,33 @@
 			bind:value={build.notes}
 			style="width: 100%; height: 10em; resize: vertical;"
 		></textarea>
-	{:else if build.notes}
-		<p>{build.notes}</p>
+
+		<h3 class="center">Tags</h3>
+
+		<div class="tags are-medium">
+			{#each tags as tag}
+				<button
+					tabindex="0"
+					class="tag {(build.tags ?? []).includes(tag) ? 'is-selected' : ''}"
+					onclick={() => toggleTag(tag)}
+				>
+					{tag}
+				</button>
+			{/each}
+		</div>
+	{:else}
+		{#if build.notes}
+			<p>{build.notes}</p>
+		{/if}
+		<h3 class="center">Tags</h3>
+
+		<div class="tags are-medium">
+			{#each tags as tag}
+				<span class="tag {(build.tags ?? []).includes(tag) ? 'is-selected' : ''}" >
+					{tag}
+				</span>
+			{/each}
+		</div>
 	{/if}
 </div>
 
@@ -392,6 +425,11 @@
 		.icon {
 			transform: translateY(0.4em);
 		}
+	}
+
+	.tag.is-selected {
+		background-color: var(--primary);
+		color: black;
 	}
 
 	.stack {

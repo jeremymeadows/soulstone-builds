@@ -26,6 +26,7 @@ export const builds = table('builds', {
   skills: text('skills', { mode: 'json' }).default(JSON.stringify(["_", "_", "_", "_", "_", "_"])),
   runes: text('runes', { mode: 'json' }).default(JSON.stringify({ versatility: ["", "", ""], tenacity: ["", "", "", ""] })),
   notes: text('notes').notNull().default(''),
+  tags: text('tags', { mode: 'json' }).notNull().default(JSON.stringify([])),
 });
 
 export const votes = table('votes', {
